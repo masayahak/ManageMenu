@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/foodmenuListFragment">
+
+    <fragment
+        android:id="@+id/foodmenuListFragment"
+        android:name="masaya.release.manage_menu.FoodmenuListFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_foodmenu_list">
+        <action
+            android:id="@+id/action_foodmenuListFragment_to_foodmenuEditFragment"
+            app:destination="@id/foodmenuEditFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_foodmenuListFragment_to_foodmenuAddFragment"
+            app:destination="@id/foodmenuAddFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodmenuEditFragment"
+        android:name="masaya.release.manage_menu.FoodmenuEditFragment"
+        android:label="@string/food_detail_fragment_title"
+        tools:layout="@layout/fragment_foodmenu_edit">
+        <argument
+            android:name="food_id"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/foodmenuAddFragment"
+        android:name="masaya.release.manage_menu.FoodmenuAddFragment"
+        android:label="@string/food_add_fragment_title"
+        tools:layout="@layout/fragment_foodmenu_add">
+    </fragment>
+</navigation>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- color_from_press_state:選択された時にグレーバック -->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="@drawable/color_from_press_state"
+    android:descendantFocusability="blocksDescendants">
+
+    <!-- 非表示のDBのID（内部処理＋デバッグ用） -->
+    <TextView
+        android:id="@+id/food_id"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        tools:text="1234" />
+
+    <TextView
+        android:id="@+id/food_name"
+        style="@style/Widget.MyStyle.ListItemTextView"
+        android:layout_width="wrap_content"
+        android:gravity="start|center_vertical"
+        android:layout_height="48dp"
+        android:layout_marginStart="@dimen/margin_between_elements"
+        android:fontFamily="sans-serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="唐揚げ定食" />
+
+    <TextView
+        android:id="@+id/food_price"
+        style="@style/Widget.MyStyle.ListItemTextView"
+        android:layout_width="wrap_content"
+        android:layout_below="@+id/food_name"
+        android:layout_marginEnd="@dimen/margin_between_elements"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="end|center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="\1,980" />
+
+    <!-- 非表示の加工していない価格（内部処理用） -->
+    <TextView
+        android:id="@+id/food_price_numeric"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

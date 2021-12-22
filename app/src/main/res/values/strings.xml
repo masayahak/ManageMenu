@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">メニュー管理</string>
+    <string name="food_name_req">メニュー <font color='#FF0000'>*</font></string>
+    <string name="food_price_req">価格 <font color='#FF0000'>*</font></string>
+    <string name="save_action">保存</string>
+    <string name="food_detail_fragment_title">メニュー修正</string>
+    <string name="food_add_fragment_title">メニュー追加</string>
+    <string name="price">価格</string>
+    <string name="food">メニュー</string>
+    <string name="add_new_food">追加</string>
+    <string name="edit">保存</string>
+    <string name="input_error">入力に誤りがあります。\n（必須項目は必ず入力してください。）</string>
+    <string name="delete_question">本当に削除しますか？</string>
+    <string name="no">やめる</string>
+    <string name="yes">削除する</string>
+    <string name="select_on_menu">操作を選んでください。</string>
+    <string name="string_edit">修正</string>
+    <string name="string_delete">削除</string>
+</resources>
