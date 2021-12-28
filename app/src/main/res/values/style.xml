@@ -49,4 +49,11 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <!-- Switch style -->
+    <style name="Widget.MyStyle.CompoundButton.Switch" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    </style>
+
 </resources>

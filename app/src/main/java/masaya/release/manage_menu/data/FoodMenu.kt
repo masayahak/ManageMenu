@@ -3,19 +3,44 @@ package masaya.release.manage_menu.data
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 import java.util.*
+
+class Converters {
+    @TypeConverter
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
+    }
+
+    @TypeConverter
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time?.toLong()
+    }
+}
 
 @Entity
 data class FoodMenu(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     @ColumnInfo(name = "name")
-    val foodName: String,
+    val foodName: String = "",
     @ColumnInfo(name = "price")
-    val foodPrice: Double
+    val foodPrice: Double = 0.0,
+    @ColumnInfo(name = "bmpName")
+    val bmpName: String = "",
+    @ColumnInfo(name = "startDate")
+    val startDate: Date? = null,
+    @ColumnInfo(name = "foodType")
+    val foodType: String = "",
+    @ColumnInfo(name = "WinterOnly")
+    val WinterOnly: Boolean = false
 )
 fun FoodMenu.getFormattedPrice(): String =
     NumberFormat.getCurrencyInstance(Locale.JAPAN).format(foodPrice)
+
+fun FoodMenu.getFormattedStartDate(): String =
+    SimpleDateFormat("yyyy/MM/dd").format(startDate)
 
 @Dao
 interface FoodMenuDao {

@@ -1,6 +1,7 @@
 package masaya.release.manage_menu
 
 import android.app.Application
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -15,7 +16,8 @@ class FoodMenuApplication : Application() {
     val database: MyRoomDatabase by lazy { MyRoomDatabase.getDatabase(this) }
 }
 
-class MainActivity : AppCompatActivity(R.layout.activity_main) {
+class ListActivity : AppCompatActivity(R.layout.activity_list),
+    FoodmenuListFragment.fromListActivityToListener {
 
     private lateinit var navController: NavController
 
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onCreate(savedInstanceState)
 
         val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+            .findFragmentById(R.id.nav_host_fragment_list) as NavHostFragment
         navController = navHostFragment.navController
         NavigationUI.setupActionBarWithNavController(this, navController)
     }
@@ -31,4 +33,18 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
+
+    override fun toAddFoodmenu() {
+        val intent = Intent(applicationContext, AddFoodmenuActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in, R.anim.fade_out);
+    }
+
+    override fun toEditFoodmenu() {
+        val intent = Intent(applicationContext, EditFoodmenuActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(R.anim.slide_in, R.anim.fade_out);
+    }
+
+
 }

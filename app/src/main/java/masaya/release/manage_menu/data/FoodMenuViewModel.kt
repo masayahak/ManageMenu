@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.launch
+import masaya.release.manage_menu.toDateorNull
 
 class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
 
@@ -20,8 +21,15 @@ class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
     }
 
     // INSERT ─────────────────────────────────────────────────
-    fun addNewFood(foodName: String, foodPrice: String) : Boolean {
-        val newFood = getNewFoodEntry(foodName, foodPrice)
+    fun addNewFood(
+        foodName: String,
+        foodPrice: String,
+        bmpName: String,
+        startDate: String,
+        foodType: String,
+        WinterOnly: Boolean
+    ) : Boolean {
+        val newFood = getNewFoodEntry(foodName, foodPrice, bmpName, startDate, foodType, WinterOnly)
         try{
             insertFood(newFood)
         }catch(e: Exception){
@@ -31,10 +39,21 @@ class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
         return true
     }
     // 画面入力状態（価格もString型）で受け取ったものを、DBの型に変換
-    private fun getNewFoodEntry(foodName: String, foodPrice: String): FoodMenu {
+    private fun getNewFoodEntry(
+        foodName: String,
+        foodPrice: String,
+        bmpName: String,
+        startDate: String,
+        foodType: String,
+        WinterOnly: Boolean
+    ): FoodMenu {
         return FoodMenu(
             foodName = foodName,
-            foodPrice = foodPrice.toDouble()
+            foodPrice = foodPrice.toDouble(),
+            bmpName = bmpName,
+            startDate = startDate.toDateorNull(),
+            foodType = foodType,
+            WinterOnly = WinterOnly
         )
     }
     //コルーチンでinsertを実装
@@ -48,9 +67,13 @@ class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
     fun updateFood(
         foodId: Int,
         foodName: String,
-        foodPrice: String
+        foodPrice: String,
+        bmpName: String,
+        startDate: String,
+        foodType: String,
+        WinterOnly: Boolean
     ) : Boolean {
-        val updatedFood = getUpdatedFoodEntry(foodId, foodName, foodPrice)
+        val updatedFood = getUpdatedFoodEntry(foodId, foodName, foodPrice, bmpName, startDate, foodType, WinterOnly)
         try{
             updateFood(updatedFood)
         }catch(e: Exception){
@@ -62,12 +85,20 @@ class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
     private fun getUpdatedFoodEntry(
         foodId: Int,
         foodName: String,
-        foodPrice: String
+        foodPrice: String,
+        bmpName: String,
+        startDate: String,
+        foodType: String,
+        WinterOnly: Boolean
     ): FoodMenu {
         return FoodMenu(
             id = foodId,
             foodName = foodName,
-            foodPrice = foodPrice.toDouble()
+            foodPrice = foodPrice.toDouble(),
+            bmpName = bmpName,
+            startDate = startDate.toDateorNull(),
+            foodType = foodType,
+            WinterOnly = WinterOnly
         )
     }
     private fun updateFood(food: FoodMenu) {

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="foodType_array">
+    <item>和食</item>
+    <item>洋食</item>
+    <item>中華</item>
+    <item>その他</item>
+</string-array>
+</resources>

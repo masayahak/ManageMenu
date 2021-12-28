@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/foodmenuAddFragment">
+
+    <fragment
+        android:id="@+id/foodmenuAddFragment"
+        android:name="masaya.release.manage_menu.FoodmenuAddFragment"
+        android:label="@string/food_add_fragment_title"
+        tools:layout="@layout/fragment_foodmenu_add">
+        <action
+            android:id="@+id/action_foodmenuAddFragment_to_imageFragment"
+            app:destination="@id/imageFragment"
+            app:enterAnim="@anim/slide_in"
+            app:exitAnim="@anim/fade_out">
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/imageFragment"
+        android:name="masaya.release.manage_menu.ImageFragment"
+        android:label="@string/fragment_image_title" >
+        <argument
+            android:name="bmpName"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

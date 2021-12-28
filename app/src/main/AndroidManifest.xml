@@ -3,15 +3,25 @@
     package="masaya.release.manage_menu">
 
     <application
-        android:allowBackup="true"
         android:name=".FoodMenuApplication"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ManageMenu">
         <activity
-            android:name=".MainActivity"
+            android:name=".EditFoodmenuActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_foodmenu"
+            android:theme="@style/Theme.ManageMenu.NoActionBar" />
+        <activity
+            android:name=".AddFoodmenuActivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_foodmenu"
+            android:theme="@style/Theme.ManageMenu.NoActionBar" />
+        <activity
+            android:name=".ListActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

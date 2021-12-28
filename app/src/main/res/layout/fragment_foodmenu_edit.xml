@@ -1,70 +1,183 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/food_name_label"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:hint="@string/food_name_req"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_margin="@dimen/margin">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/food_name"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/food_name_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:hint="@string/food_name_req"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <!-- 枠線になるのはstyleじゃなくてthemeで指定している。 -->
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/food_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textAutoComplete|textCapWords"
+                    android:singleLine="true">
+                    <requestFocus/>
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/category_and_winter"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textAutoComplete|textCapWords"
-                android:singleLine="true">
-                <requestFocus/>
-            </com.google.android.material.textfield.TextInputEditText>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_name_label"
+                >
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <!-- カテゴリー -->
+                <TextView
+                    android:id="@+id/food_type_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:text="@string/food_category"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/food_name_label">
+                </TextView>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/food_price_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:hint="@string/food_price_req"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/food_name_label"
-            >
+                <Spinner
+                    android:id="@+id/food_type_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_margin="@dimen/margin"
+                    android:contentDescription="@string/food_category"
+                    app:layout_constraintStart_toEndOf="@id/food_type_label"
+                    app:layout_constraintTop_toBottomOf="@+id/food_name_label"
+                    />
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/food_price"
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/winter_only"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="@dimen/margin"
+                    android:checked="false"
+                    android:text="冬季限定"
+                    app:layout_constraintStart_toEndOf="@id/food_type_spinner"
+                    app:layout_constraintTop_toBottomOf="@+id/food_name_label"
+                    />
+
+            </LinearLayout>
+
+            <!-- 価格 と 販売開始日 -->
+            <LinearLayout
+                android:id="@+id/price_and_date"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="numberDecimal"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/category_and_winter"
+                >
 
-        <Button
-            android:id="@+id/edit_food"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:text="@string/edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/food_price_label" />
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/food_price_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:hint="@string/food_price_req"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/food_type_label"
+                    android:layout_weight="1"
+                    >
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/food_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/food_startDate_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:hint="@string/food_startDate_req"
+                    app:layout_constraintStart_toEndOf="@id/food_price_label"
+                    app:layout_constraintTop_toBottomOf="@+id/food_type_label"
+                    android:layout_weight="1"
+                    >
 
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/food_startDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="date"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
+            </LinearLayout>
 
+            <!-- 画像 -->
+            <TextView
+                android:id="@+id/food_image_bmp_name"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/price_and_date">
+            </TextView>
+
+            <ImageView
+                android:id="@+id/foodimage"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="@dimen/margin"
+                android:contentDescription="@string/food_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/price_and_date"
+                android:background="@drawable/border"
+                android:src="@drawable/no_image"
+                />
+
+            <!-- 画像編集ボタン -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_between_elements"
+                android:layout_marginBottom="@dimen/margin_between_elements"
+                android:contentDescription="@string/select_image"
+                app:backgroundTint="@color/gray"
+                android:src="@drawable/ic_baseline_image_search_24"
+                app:layout_constraintBottom_toBottomOf="@+id/foodimage"
+                app:layout_constraintEnd_toEndOf="@+id/foodimage"
+                app:tint="@android:color/black" />
+
+            <Button
+                android:id="@+id/edit_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:text="@string/edit"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/foodimage" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/foodmenuListFragment">
+
+    <fragment
+        android:id="@+id/foodmenuListFragment"
+        android:name="masaya.release.manage_menu.FoodmenuListFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_foodmenu_list"/>
+
+</navigation>
