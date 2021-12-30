@@ -4,7 +4,6 @@ import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
 import java.util.*
 
 class Converters {
@@ -15,7 +14,7 @@ class Converters {
 
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.time?.toLong()
+        return date?.time
     }
 }
 
@@ -39,8 +38,13 @@ data class FoodMenu(
 fun FoodMenu.getFormattedPrice(): String =
     NumberFormat.getCurrencyInstance(Locale.JAPAN).format(foodPrice)
 
-fun FoodMenu.getFormattedStartDate(): String =
-    SimpleDateFormat("yyyy/MM/dd").format(startDate)
+fun FoodMenu.getFormattedStartDate(): String? {
+    return if (startDate != null) {
+        SimpleDateFormat("yyyy/MM/dd").format(startDate)
+    } else {
+        null
+    }
+}
 
 @Dao
 interface FoodMenuDao {

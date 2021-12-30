@@ -2,12 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/foodmenuListFragment">
+    app:startDestination="@id/FragmentList">
 
     <fragment
-        android:id="@+id/foodmenuListFragment"
-        android:name="masaya.release.manage_menu.FoodmenuListFragment"
+        android:id="@+id/FragmentList"
+        android:name="masaya.release.manage_menu.FragmentList"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_foodmenu_list"/>
-
+        tools:layout="@layout/fragment_list"/>
 </navigation>

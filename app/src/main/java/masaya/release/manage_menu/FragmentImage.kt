@@ -7,9 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import masaya.release.manage_menu.databinding.FragmentImageBinding
 
-class ImageFragment : Fragment(){
+class FragmentImage : Fragment(){
 
-    private val navigationArgs: ImageFragmentArgs by navArgs()
+    private val navigationArgs: FragmentImageArgs by navArgs()
 
     private var _binding: FragmentImageBinding? = null
     private val binding get() = _binding!!
@@ -23,7 +23,6 @@ class ImageFragment : Fragment(){
     // アプリケーションバーのオプション用メニューを生成
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         // 左上の←（戻るボタン）を表示
-        // TODO これ引数が戻せない
         val activity = activity as AppCompatActivity?
         activity?.supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }

@@ -9,10 +9,15 @@
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/drawable/ic__0200505_noimage.xml" value="0.371875" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/drawable/ic_baseline_restaurant_menu_24.xml" value="0.36465781409601633" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/drawable/ic_launcher_background.xml" value="0.36465781409601633" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/drawable/outline.xml" value="0.23177083333333334" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/drawable/outline_white_background.xml" value="0.23177083333333334" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/drawable/spinnerBorder.xml" value="0.209375" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/drawable/spinner_border.xml" value="0.209375" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/activity_add.xml" value="0.16032608695652173" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/activity_add_foodmenu.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/activity_add_foodmenu_content.xml" value="0.18958333333333333" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/activity_edit.xml" value="0.12409420289855072" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/activity_edit_foodmenu.xml" value="0.14945652173913043" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/activity_list.xml" value="0.20606884057971014" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/activity_main.xml" value="0.10280797101449275" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/content_add_foodmenu.xml" value="0.20606884057971014" />
@@ -20,11 +25,14 @@
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/foodmenu_edit_fragment.xml" value="0.10280797101449275" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/foodmenu_list_fragment.xml" value="0.10280797101449275" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/foodmenu_list_row.xml" value="0.10280797101449275" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_add.xml" value="0.215625" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_edit.xml" value="0.24818840579710144" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_foodmenu_add.xml" value="0.33" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_foodmenu_edit.xml" value="0.25" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_foodmenu_lis.xml" value="0.21603260869565216" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_foodmenu_list.xml" value="0.17028254288597378" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_image.xml" value="0.17028254288597378" />
+        <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/fragment_list.xml" value="0.18115942028985507" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/layout/row_foodmenu_list.xml" value="0.5" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/menu/menu_popup_menu_list.xml" value="0.2935185185185185" />
         <entry key="..\:/Users/sin60/AndroidStudioProjects/@masaya_release/manage_menu/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.371875" />

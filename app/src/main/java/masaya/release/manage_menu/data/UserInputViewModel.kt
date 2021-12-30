@@ -4,7 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
+// ユーザーの画面入力を同一アクティビティ内で保持するためのビューモデル
 class UserInputViewModel : ViewModel() {
+
+    private val _foodId = MutableLiveData(-1)
+    val foodId: LiveData<Int> = _foodId
+
+    fun setfoodId(foodId: Int) {
+        _foodId.value = foodId
+    }
 
     private val _foodName = MutableLiveData("")
     val foodName: LiveData<String> = _foodName
@@ -28,7 +36,7 @@ class UserInputViewModel : ViewModel() {
         _bmpName.value = bmpName
     }
 
-    // あくまでも画面入力の途中の状態なので数値ではなく文字列で良い
+    // あくまでも画面入力の途中の状態なので日付ではなく文字列で良い
     private val _startDate = MutableLiveData("")
     val startDate: LiveData<String> = _startDate
 

@@ -2,14 +2,12 @@ package masaya.release.manage_menu
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,28 +17,28 @@ import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.*
 
 
-class FoodmenuListFragment : Fragment(), CustomAdapterListener {
+class FragmentList : Fragment(), CustomAdapterListener {
     private val viewModel: FoodMenuViewModel by activityViewModels {
         FoodMenuViewModelFactory(
             (activity?.application as FoodMenuApplication).database.FoodMenuDao()
         )
     }
 
-    private var _binding: FragmentFoodmenuListBinding? = null
+    private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
-    interface fromListActivityToListener {
+    interface FromActivityListToListener {
         fun toAddFoodmenu()
-        fun toEditFoodmenu()
+        fun toEditFoodmenu(foodId: Int)
     }
 
-    private var listener : fromListActivityToListener? = null
+    private var listener : FromActivityListToListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        listener = context as? fromListActivityToListener
+        listener = context as? FromActivityListToListener
         if (listener == null) {
-            throw ClassCastException("$context must implement fromListActivityToListener")
+            throw ClassCastException("$context must implement FromActivityListToListener")
         }
     }
 
@@ -48,6 +46,7 @@ class FoodmenuListFragment : Fragment(), CustomAdapterListener {
         super.onDetach()
         listener = null
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -67,7 +66,7 @@ class FoodmenuListFragment : Fragment(), CustomAdapterListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentFoodmenuListBinding.inflate(inflater, container, false)
+        _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -98,7 +97,7 @@ class FoodmenuListFragment : Fragment(), CustomAdapterListener {
 
     // ポップアップメニューの修正クリック
     override fun onEditClicked(foodId: Int) {
-        listener?.toEditFoodmenu()
+        listener?.toEditFoodmenu(foodId)
     }
 
     // ポップアップメニューの削除クリック
@@ -136,11 +135,6 @@ class FoodListAdapter(_listener: CustomAdapterListener) : RecyclerView.Adapter<F
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val current : FoodMenu = getItem(position)
         holder.bind(current)
-        // 行がロングクリックされた時にポップアップメニューを表示する
-        holder.itemView.setOnLongClickListener {
-            holder.onClick()
-            return@setOnLongClickListener true
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewtype: Int): FoodViewHolder {
@@ -168,7 +162,7 @@ class FoodListAdapter(_listener: CustomAdapterListener) : RecyclerView.Adapter<F
 
         }
 
-        fun onClick() {
+        private fun onClick() {
             val food = FoodMenu(
                 binding.foodId.text.toString().toInt(),
                 binding.foodName.text.toString()

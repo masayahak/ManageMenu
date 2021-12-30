@@ -9,15 +9,15 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import masaya.release.manage_menu.data.MyRoomDatabase
 
-// アプリケーションクラス名「MenuApplication」は、
-// マニュフェストのandroid:name=".MenuApplication"と合わせる必要がある
+// アプリケーションクラス名「FoodMenuApplication」は、
+// マニュフェストのandroid:name=".FoodMenuApplication"と合わせる必要がある
 class FoodMenuApplication : Application() {
     // アプリケーション全体でデータベースインスタンスを１つだけ持つため。
     val database: MyRoomDatabase by lazy { MyRoomDatabase.getDatabase(this) }
 }
 
-class ListActivity : AppCompatActivity(R.layout.activity_list),
-    FoodmenuListFragment.fromListActivityToListener {
+class ActivityList : AppCompatActivity(R.layout.activity_list),
+    FragmentList.FromActivityListToListener {
 
     private lateinit var navController: NavController
 
@@ -35,16 +35,19 @@ class ListActivity : AppCompatActivity(R.layout.activity_list),
     }
 
     override fun toAddFoodmenu() {
-        val intent = Intent(applicationContext, AddFoodmenuActivity::class.java)
+        val intent = Intent(applicationContext, ActivityAdd::class.java)
         startActivity(intent)
-        overridePendingTransition(R.anim.slide_in, R.anim.fade_out);
+        overridePendingTransition(R.anim.slide_in, R.anim.fade_out)
     }
 
-    override fun toEditFoodmenu() {
-        val intent = Intent(applicationContext, EditFoodmenuActivity::class.java)
+    override fun toEditFoodmenu(foodId: Int) {
+        val intent = Intent(applicationContext, ActivityEdit::class.java)
+
+        val b = Bundle()
+        b.putInt("foodId", foodId)
+        intent.putExtras(b)
+
         startActivity(intent)
-        overridePendingTransition(R.anim.slide_in, R.anim.fade_out);
+        overridePendingTransition(R.anim.slide_in, R.anim.fade_out)
     }
-
-
 }

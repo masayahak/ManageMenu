@@ -11,17 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ManageMenu">
         <activity
-            android:name=".EditFoodmenuActivity"
-            android:exported="false"
-            android:label="@string/title_activity_edit_foodmenu"
-            android:theme="@style/Theme.ManageMenu.NoActionBar" />
-        <activity
-            android:name=".AddFoodmenuActivity"
-            android:exported="false"
-            android:label="@string/title_activity_add_foodmenu"
-            android:theme="@style/Theme.ManageMenu.NoActionBar" />
-        <activity
-            android:name=".ListActivity"
+            android:name=".ActivityList"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +19,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ActivityAdd"
+            android:exported="false"
+            android:label="@string/title_activity_add_foodmenu"
+            />
+        <activity
+            android:name=".ActivityEdit"
+            android:exported="false"
+            android:label="@string/title_activity_edit_foodmenu"
+            />
     </application>
 
 </manifest>

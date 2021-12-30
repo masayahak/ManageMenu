@@ -13,7 +13,7 @@ abstract class MyRoomDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: MyRoomDatabase? = null
-        const val DB_FILE_NAME = "my_room_database.db"
+        private const val DB_FILE_NAME = "my_room_database.db"
 
         fun getDatabase(context: Context): MyRoomDatabase {
             return INSTANCE ?: synchronized(this) {
