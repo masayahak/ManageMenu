@@ -1,7 +1,12 @@
 package masaya.release.manage_menu
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.view.MotionEvent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
@@ -20,6 +25,9 @@ class ActivityEdit : AppCompatActivity(R.layout.activity_edit),
         userInputViewModel.setfoodId(-1)
         val b = intent.extras
         if (b != null) {
+            val mode = b.getString("MODE").toString()
+            userInputViewModel.setInputMode(mode)
+
             val foodId = b.getInt("foodId")
             userInputViewModel.setfoodId(foodId)
         }
@@ -28,6 +36,7 @@ class ActivityEdit : AppCompatActivity(R.layout.activity_edit),
             .findFragmentById(R.id.nav_host_fragment_edit) as NavHostFragment
         val navController = navHostFragment.navController
         NavigationUI.setupActionBarWithNavController(this, navController)
+
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -61,5 +70,15 @@ class ActivityEdit : AppCompatActivity(R.layout.activity_edit),
         finish()
         overridePendingTransition(R.anim.slide_in, R.anim.fade_out)
     }
+}
 
+object KeyboardUtils {
+    fun hideKeyboard(focusView: View) {
+        val inputMethodManager: InputMethodManager =
+            focusView.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(
+            focusView.windowToken,
+            InputMethodManager.HIDE_NOT_ALWAYS
+        )
+    }
 }

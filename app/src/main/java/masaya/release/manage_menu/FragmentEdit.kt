@@ -2,14 +2,14 @@ package masaya.release.manage_menu
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -18,6 +18,20 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.navigation.fragment.findNavController
 import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.FragmentEditBinding
+import java.io.BufferedInputStream
+import java.io.ByteArrayOutputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.lang.IllegalArgumentException
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.*
+import android.widget.Toast
+
+import android.view.View.OnFocusChangeListener
+
+
+
 
 class FragmentEdit : Fragment() {
 
@@ -59,18 +73,43 @@ class FragmentEdit : Fragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        initFoodTypeDropdown()
+    }
+
+    private fun initFoodTypeDropdown() {
+        // ドロップダウンの初期設定
+        val foodTypes = resources.getStringArray(R.array.foodType_array)
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_foodtype, foodTypes)
+        binding.foodTypeDropdown.setAdapter(arrayAdapter)
+    }
+
+    private fun setFoodTypeDropdown(item : String) {
+        binding.foodTypeDropdown.setText(item)
+        initFoodTypeDropdown()
+    }
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.lifecycleOwner = viewLifecycleOwner
         binding.userInputViewModel = userInputViewModel
 
-        // 修正対象のID
-        foodID = userInputViewModel.foodId.value!!
+        // アクションバーのタイトル設定
+        if (userInputViewModel.inputMode.value == "ADD") {
+            (activity as AppCompatActivity).supportActionBar?.title = "メニューの追加" // TODO @string
+        } else if (userInputViewModel.inputMode.value == "EDIT") {
+            (activity as AppCompatActivity).supportActionBar?.title = "メニューの修正"
+        }
 
-        // スピナー（ドロップダウンボックス）の初期設定
-        val spinner: Spinner = binding.foodTypeSpinner
-        setFoodtypeSpinner(requireActivity(), spinner)
+        // ドロップダウンがフォーカスを受けたらキーボードを隠す
+        binding.foodTypeDropdown.setOnFocusChangeListener(
+            (OnFocusChangeListener { v, hasFocus ->
+                if (hasFocus) KeyboardUtils.hideKeyboard(v)
+            })
+        )
 
         // 入力途中の情報があれば、再設定し入力を補助する
         reloadUserInput()
@@ -87,13 +126,24 @@ class FragmentEdit : Fragment() {
             launcher.launch(intent)
         }
 
-        // 修正ボタン
-        binding.editFood.setOnClickListener { editFood() }
+        // 保存ボタン
+        binding.editFood.setOnClickListener {
+            if (userInputViewModel.inputMode.value == "ADD") {
+                addFood()
+            } else if (userInputViewModel.inputMode.value == "EDIT") {
+                editFood()
+            }
+        }
 
         // 一覧と同様にデータベースの変更を監視しているので、変更があれば動的に詳細データを自動更新
         // データ１行をDBから取得し画面へ表示（動的監視付き）の良いサンプル
-        viewModel.retrieveFood(foodID).observe(this.viewLifecycleOwner) { food ->
-            bind(food)
+        if (userInputViewModel.inputMode.value == "EDIT") {
+            // 修正対象のID
+            foodID = userInputViewModel.foodId.value!!
+
+            viewModel.retrieveFood(foodID).observe(this.viewLifecycleOwner) { food ->
+                bind(food)
+            }
         }
     }
 
@@ -114,7 +164,9 @@ class FragmentEdit : Fragment() {
                     val bmp = BitmapFactory.decodeStream(inputStream)
 
                     // 取得した画像を内部ストレージへ書き込む
-                    val fileName = binding.foodImageBmpName.text.toString()
+                    val fileName = "${UUID.randomUUID()}.jpg"
+                    binding.foodImageBmpName.text = fileName
+                    // 取得した画像を内部ストレージへ書き込む
                     saveImgsFromBmp(bmp, fileName, requireActivity())
 
                     // 内部ストレージへ書き込んだファイルから改めて画像取得
@@ -174,7 +226,7 @@ class FragmentEdit : Fragment() {
         // カテゴリー
         val foodType = binding.userInputViewModel?.foodType?.value
         if (foodType != null && foodType != "") {
-            setSpinnerSelection(binding.foodTypeSpinner, foodType)
+            binding.foodTypeDropdown.setText(foodType)
         }
 
         // 冬季限定
@@ -191,7 +243,7 @@ class FragmentEdit : Fragment() {
         binding.userInputViewModel?.setPrice(binding.foodPrice.text.toString())
         binding.userInputViewModel?.setBmpName(binding.foodImageBmpName.text.toString())
         binding.userInputViewModel?.setStartDate(binding.foodStartDate.text.toString())
-        binding.userInputViewModel?.setFoodType(binding.foodTypeSpinner.selectedItem as String)
+        binding.userInputViewModel?.setFoodType(binding.foodTypeDropdown.text.toString())
         binding.userInputViewModel?.setWinterOnly(binding.winterOnly.isChecked)
     }
 
@@ -202,7 +254,7 @@ class FragmentEdit : Fragment() {
     private fun bind(food: FoodMenu) {
         binding.foodName.setText(food.foodName)
         binding.foodPrice.setText(food.foodPrice.toInt().toString())
-        setSpinnerSelection(binding.foodTypeSpinner, food.foodType)
+        setFoodTypeDropdown(food.foodType)
         binding.winterOnly.isChecked = food.WinterOnly
         binding.foodStartDate.setText(food.getFormattedStartDate())
 
@@ -236,6 +288,37 @@ class FragmentEdit : Fragment() {
     }
 
     // ───────────────────────────────────────────────────────────
+    // ADD（追加）
+    // ───────────────────────────────────────────────────────────
+    private fun addFood() {
+        // 画面入力チェック
+        val inputFoodName : Editable? = binding.foodName.text
+        val inputFoodStartDate : Editable? = binding.foodStartDate.text
+        val inputFoodPrice : Editable? = binding.foodPrice.text
+        if (!checkInputFood(inputFoodName, inputFoodStartDate, inputFoodPrice)){
+            showErrorMessage()
+            return
+        }
+
+        // DB更新
+        val ret : Boolean = viewModel.addNewFood (
+            binding.foodName.text.toString(),
+            binding.foodPrice.text.toString(),
+            binding.foodImageBmpName.text.toString(),
+            binding.foodStartDate.text.toString(),
+            binding.foodTypeDropdown.text.toString(),
+            binding.winterOnly.isChecked
+        )
+        if (!ret) {
+            showErrorMessage()
+            return
+        }
+
+        //一覧へ戻る
+        listener?.toListActivity()
+    }
+
+    // ───────────────────────────────────────────────────────────
     // EDIT（変更）
     // ───────────────────────────────────────────────────────────
     private fun editFood() {
@@ -255,7 +338,7 @@ class FragmentEdit : Fragment() {
             binding.foodPrice.text.toString(),
             binding.foodImageBmpName.text.toString(),
             binding.foodStartDate.text.toString(),
-            binding.foodTypeSpinner.selectedItem as String,
+            binding.foodTypeDropdown.text.toString(),
             binding.winterOnly.isChecked
         )
         if (!ret) {
@@ -284,4 +367,84 @@ class FragmentEdit : Fragment() {
         inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
         _binding = null
     }
+}
+
+
+// ユーザーが選択した画像を内部ストレージに保管する
+fun saveImgsFromBmp(bmp: Bitmap, outputFileName:String, context: Context) {
+    try {
+        val byteArrOutputStream = ByteArrayOutputStream()
+        val fileOutputStream: FileOutputStream = context.openFileOutput(outputFileName,Context.MODE_PRIVATE)
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutputStream)
+        fileOutputStream.write(byteArrOutputStream.toByteArray())
+        fileOutputStream.close()
+    }
+    catch (e:Exception){
+        e.printStackTrace()
+    }
+}
+
+// 内部ストレージ内の画像を取得する
+fun readImgsFromFileName(fileName:String, context: Context): Bitmap? {
+    return try {
+        val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
+        BitmapFactory.decodeStream(bufferedInputStream)
+    }
+    catch (e: IOException){
+        e.printStackTrace()
+        null
+    }
+}
+
+fun String.isDate(pattern: String = "yyyy/MM/dd"): Boolean {
+    val sdFormat = try {
+        SimpleDateFormat(pattern)
+    } catch (e: IllegalArgumentException) {
+        return false
+    }
+    sdFormat.let {
+        try {
+            it.parse(this)
+        } catch (e: ParseException){
+            return false
+        }
+    }
+    return true
+}
+
+fun String.toDateorNull(pattern: String = "yyyy/MM/dd"): Date? {
+    val sdFormat = try {
+        SimpleDateFormat(pattern)
+    } catch (e: IllegalArgumentException) {
+        return null
+    }
+    val date = sdFormat.let {
+        try {
+            it.parse(this)
+        } catch (e: ParseException){
+            return null
+        }
+    }
+    return date
+}
+
+// 画面から入力された内容をチェック
+fun checkInputFood(inputFoodName : Editable?, inputFoodStartDate : Editable?, inputFoodPrice : Editable?) : Boolean{
+    if (inputFoodName.isNullOrEmpty()){
+        return false
+    }
+    if (inputFoodStartDate.isNullOrEmpty()){
+        return false
+    }
+    if(!inputFoodStartDate.toString().isDate()) {
+        return false
+    }
+    if (inputFoodPrice.isNullOrEmpty()){
+        return false
+    }
+    val checkInt = inputFoodPrice.toString().toIntOrNull()
+    if (checkInt == null){
+        return false
+    }
+    return true
 }

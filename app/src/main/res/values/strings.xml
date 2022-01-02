@@ -2,10 +2,9 @@
     <string name="app_name">メニュー管理</string>
     <string name="food_name_req">メニュー <font color='#FF0000'>*</font></string>
     <string name="food_price_req">価格 <font color='#FF0000'>*</font></string>
-    <string name="food_startDate_req">販売開始日 <font color='#FF0000'>*</font></string>
+    <string name="food_startDate_req">販売開始日 <font color='#FF0000'>*</font> 年/月/日 </string>
     <string name="save_action">保存</string>
-    <string name="food_detail_fragment_title">メニュー修正</string>
-    <string name="food_add_fragment_title">メニュー追加</string>
+    <string name="food_detail_fragment_title">メニュー編集</string>
     <string name="price">価格</string>
     <string name="food">メニュー</string>
     <string name="add_new_food">追加</string>
@@ -23,14 +22,7 @@
     <string name="image_extention">画像を拡大します。</string>
     <string name="fragment_image_title">メニューの画像</string>
     <string name="title_activity_add_foodmenu">AddFoodmenuActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_edit_foodmenu">EditFoodmenuActivity</string>
     <string name="winter_only">冬季限定</string>
+    <string name="food_type">カテゴリー</string>
+    <string name="default_food_type">和食</string>
 </resources>

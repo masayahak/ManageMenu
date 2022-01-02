@@ -35,15 +35,21 @@ class ActivityList : AppCompatActivity(R.layout.activity_list),
     }
 
     override fun toAddFoodmenu() {
-        val intent = Intent(applicationContext, ActivityAdd::class.java)
+        val intent = Intent(applicationContext, ActivityEdit::class.java)
+
+        val b = Bundle()
+        b.putString("MODE", "ADD")
+        b.putInt("foodId", -1)
+        intent.putExtras(b)
+
         startActivity(intent)
-        overridePendingTransition(R.anim.slide_in, R.anim.fade_out)
-    }
+        overridePendingTransition(R.anim.slide_in, R.anim.fade_out)    }
 
     override fun toEditFoodmenu(foodId: Int) {
         val intent = Intent(applicationContext, ActivityEdit::class.java)
 
         val b = Bundle()
+        b.putString("MODE", "EDIT")
         b.putInt("foodId", foodId)
         intent.putExtras(b)
 

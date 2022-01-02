@@ -7,6 +7,13 @@ import androidx.lifecycle.ViewModel
 // ユーザーの画面入力を同一アクティビティ内で保持するためのビューモデル
 class UserInputViewModel : ViewModel() {
 
+    private val _inputMode = MutableLiveData("")
+    val inputMode: LiveData<String> = _inputMode
+
+    fun setInputMode(inputMode: String) {
+        _inputMode.value = inputMode
+    }
+
     private val _foodId = MutableLiveData(-1)
     val foodId: LiveData<Int> = _foodId
 

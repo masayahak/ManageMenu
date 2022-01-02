@@ -7,7 +7,6 @@
     <fragment
         android:id="@+id/FragmentEdit"
         android:name="masaya.release.manage_menu.FragmentEdit"
-        android:label="@string/food_detail_fragment_title"
         tools:layout="@layout/fragment_edit">
         <action
             android:id="@+id/action_FragmentEdit_to_FragmentImage"
@@ -27,9 +26,6 @@
         <action
             android:id="@+id/action_FragmentImage_to_FragmentEdit"
             app:destination="@id/FragmentEdit" />
-        <action
-            android:id="@+id/action_FragmentImage_to_FragmentAdd"
-            app:destination="@id/FragmentAdd" />
     </fragment>
 
 </navigation>

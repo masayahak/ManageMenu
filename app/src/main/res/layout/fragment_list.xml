@@ -49,7 +49,9 @@
             android:scrollbars="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider" />
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            android:paddingBottom="200dp"
+            android:clipToPadding="false"/>
 
         <!-- 追加ボタン -->
         <com.google.android.material.floatingactionbutton.FloatingActionButton

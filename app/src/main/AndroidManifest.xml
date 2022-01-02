@@ -20,14 +20,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityAdd"
-            android:exported="false"
-            android:label="@string/title_activity_add_foodmenu"
-            />
-        <activity
             android:name=".ActivityEdit"
             android:exported="false"
-            android:label="@string/title_activity_edit_foodmenu"
             />
     </application>
 
