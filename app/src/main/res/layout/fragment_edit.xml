@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin">
 
+            <!-- メニューのタイトル -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/food_name_label"
                 android:layout_width="0dp"
@@ -78,6 +79,7 @@
 
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- 冬季限定 -->
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/winter_only"
                     style="@style/Widget.MyStyle.CompoundButton.Switch"
@@ -102,6 +104,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/category_and_winter"
                 android:baselineAligned="false">
 
+                <!-- 価格 -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/food_price_label"
                     android:layout_width="0dp"
@@ -109,7 +112,7 @@
                     android:layout_marginTop="@dimen/margin"
                     app:startIconDrawable="@drawable/ic_yen"
                     android:hint="@string/food_price_req"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -120,15 +123,17 @@
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- 販売開始日 -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/food_startDate_label"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin"
                     android:layout_marginStart="@dimen/margin"
                     android:hint="@string/food_startDate_req"
                     app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -136,7 +141,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:inputType="date"
-                        android:singleLine="true" />
+                        android:drawableEnd="@drawable/ic_arrow_down"
+                        />
                 </com.google.android.material.textfield.TextInputLayout>
 
             </LinearLayout>

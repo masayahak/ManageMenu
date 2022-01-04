@@ -12,21 +12,17 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import masaya.release.manage_menu.ImageFiles.ImageFiles
 import masaya.release.manage_menu.data.FoodMenuViewModel
 import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.*
 
+class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
 
-class FragmentList : Fragment(), CustomAdapterListener {
-    private val viewModel: FoodMenuViewModel by activityViewModels {
-        FoodMenuViewModelFactory(
-            (activity?.application as FoodMenuApplication).database.FoodMenuDao()
-        )
-    }
-
-    private var _binding: FragmentListBinding? = null
-    private val binding get() = _binding!!
-
+    // ─────────────────────────────────────────────────────
+    // 追加画面、修正画面へ遷移する
+    // アクティビティに移譲するためのインターフェースとリスナー
+    // ─────────────────────────────────────────────────────
     interface FromActivityListToListener {
         fun toAddFoodmenu()
         fun toEditFoodmenu(foodId: Int)
@@ -47,19 +43,16 @@ class FragmentList : Fragment(), CustomAdapterListener {
         listener = null
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // メニューのために必要
-        setHasOptionsMenu(true)
+    // ROOMデータベースアクセス用ビューモデル
+    private val viewModel: FoodMenuViewModel by activityViewModels {
+        FoodMenuViewModelFactory(
+            (activity?.application as FoodMenuApplication).database.FoodMenuDao()
+        )
     }
 
-    // アプリケーションバーのオプション用メニューを生成
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        // 左上の←（戻るボタン）を消す
-        val activity = activity as AppCompatActivity?
-        activity?.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-    }
+    // ─────────────────────────────────────────────────────
+    private var _binding: FragmentListBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -122,18 +115,24 @@ class FragmentList : Fragment(), CustomAdapterListener {
     }
 }
 
-interface CustomAdapterListener {
-    fun onEditClicked(foodId: Int)
-    fun onDeleteClicked(food: FoodMenu)
-}
+// ───────────────────────────────────────────────────────────
+// リスト表示用のアダプタ
+// 引数：_listener リストをクリックし「修正」、「削除」を選択できるが
+//      選択時の処理は呼び出し元のフラグメントで処理したい。
+// ───────────────────────────────────────────────────────────
+class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodListAdapter.FoodViewHolder>() {
 
-class FoodListAdapter(_listener: CustomAdapterListener) : RecyclerView.Adapter<FoodListAdapter.FoodViewHolder>() {
+    interface PopupEventListner {
+        fun onEditClicked(foodId: Int)
+        fun onDeleteClicked(food: FoodMenu)
+    }
 
+    private val listener : PopupEventListner = _listener
     private var foodList: List<FoodMenu?>? = null
-    private val listener : CustomAdapterListener = _listener
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val current : FoodMenu = getItem(position)
+        // １行分のデータcurrentを画面へセットする
         holder.bind(current)
     }
 
@@ -142,18 +141,21 @@ class FoodListAdapter(_listener: CustomAdapterListener) : RecyclerView.Adapter<F
         return FoodViewHolder(view, listener)
     }
 
-    class FoodViewHolder(private val binding: RowFoodmenuListBinding, private val listener : CustomAdapterListener) :
-        RecyclerView.ViewHolder(binding.root) {
+    class FoodViewHolder(
+        private val binding: RowFoodmenuListBinding,
+        private val listener : PopupEventListner)
+        : RecyclerView.ViewHolder(binding.root) {
 
+        // １行分のデータcurrentを画面へセットする
         fun bind(item: FoodMenu) {
-
-            // 画像のロード
-            val loadbmp = readImgsFromFileName(item.bmpName, binding.root.context)
-            binding.foodimage.setImageBitmap(loadbmp)
 
             binding.foodId.text = item.id.toString()
             binding.foodName.text = item.foodName
             binding.foodPrice.text = item.getFormattedPrice()
+
+            // 画像のロード
+            val loadbmp = ImageFiles.readImgsFromFileName(binding.root.context, item.bmpName)
+            binding.foodimage.setImageBitmap(loadbmp)
 
             // ︙がクリックされた時にポップアップメニューを表示する
             binding.rowMenu.setOnClickListener {
@@ -162,6 +164,7 @@ class FoodListAdapter(_listener: CustomAdapterListener) : RecyclerView.Adapter<F
 
         }
 
+        // ポップアップメニュー表示（修正／削除用）
         private fun onClick() {
             val food = FoodMenu(
                 binding.foodId.text.toString().toInt(),
@@ -176,10 +179,12 @@ class FoodListAdapter(_listener: CustomAdapterListener) : RecyclerView.Adapter<F
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.menuListContextEdit -> {
+                        // 修正を選択
                         listener.onEditClicked(food.id)
                         true
                     }
                     R.id.menuListContextDelete -> {
+                        // 削除を選択
                         listener.onDeleteClicked(food)
                         true
                     }

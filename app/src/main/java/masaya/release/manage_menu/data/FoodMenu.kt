@@ -2,7 +2,9 @@ package masaya.release.manage_menu.data
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
+import java.lang.IllegalArgumentException
 import java.text.NumberFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -64,4 +66,20 @@ interface FoodMenuDao {
     @Delete
     suspend fun delete(item: FoodMenu)
 
+}
+
+fun String.toDateorNull(pattern: String = "yyyy/MM/dd"): Date? {
+    val sdFormat = try {
+        SimpleDateFormat(pattern)
+    } catch (e: IllegalArgumentException) {
+        return null
+    }
+    val date = sdFormat.let {
+        try {
+            it.parse(this)
+        } catch (e: ParseException){
+            return null
+        }
+    }
+    return date
 }

@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import masaya.release.manage_menu.ImageFiles.ImageFiles
 import masaya.release.manage_menu.databinding.FragmentImageBinding
 
 class FragmentImage : Fragment(){
@@ -43,7 +44,7 @@ class FragmentImage : Fragment(){
         val bmpName = navigationArgs.bmpName
 
         // 内部ストレージへ書き込んだファイルから改めて画像取得
-        val loadbmp = readImgsFromFileName(bmpName, requireActivity())
+        val loadbmp = ImageFiles.readImgsFromFileName(requireActivity(), bmpName)
         binding.foodimage.setImageBitmap(loadbmp)
 
     }

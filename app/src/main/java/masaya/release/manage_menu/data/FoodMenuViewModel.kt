@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.launch
-import masaya.release.manage_menu.toDateorNull
 
 class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
 

@@ -2,7 +2,6 @@ package masaya.release.manage_menu
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -18,20 +17,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import androidx.navigation.fragment.findNavController
 import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.FragmentEditBinding
-import java.io.BufferedInputStream
-import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
-import java.io.IOException
-import java.lang.IllegalArgumentException
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 import android.widget.Toast
-
 import android.view.View.OnFocusChangeListener
-
-
-
+import masaya.release.manage_menu.ImageFiles.ImageFiles
+import masaya.release.manage_menu.UI.MyDatePicker
 
 class FragmentEdit : Fragment() {
 
@@ -50,6 +40,30 @@ class FragmentEdit : Fragment() {
     private var _binding: FragmentEditBinding? = null
     private val binding get() = _binding!!
 
+    // ───────────────────────────────────────────────────────────
+    // メニュー一覧（ActivityList）へ戻るためのリスナー
+    // ───────────────────────────────────────────────────────────
+    interface FromActivityEditToListener {
+        fun toListActivity()
+    }
+
+    private var listener : FromActivityEditToListener? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        listener = context as? FromActivityEditToListener
+        if (listener == null) {
+            throw ClassCastException("$context must implement FromActivityEditToListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
+
+
+    // ───────────────────────────────────────────────────────────
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -73,6 +87,7 @@ class FragmentEdit : Fragment() {
         return binding.root
     }
 
+    // ドロップダウンの初期化
     override fun onResume() {
         super.onResume()
         initFoodTypeDropdown()
@@ -87,7 +102,10 @@ class FragmentEdit : Fragment() {
 
     private fun setFoodTypeDropdown(item : String) {
         binding.foodTypeDropdown.setText(item)
+        // setTextを実行するとドロップダウンへセットしたアダプタがリセットされるので再設定する
         initFoodTypeDropdown()
+        // アダプタ再設定時にドロップダウンが開いた状態になるのを防ぐためにフォーカスを外す
+        binding.foodTypeDropdown.clearFocus()
     }
 
 
@@ -98,21 +116,29 @@ class FragmentEdit : Fragment() {
         binding.userInputViewModel = userInputViewModel
 
         // アクションバーのタイトル設定
-        if (userInputViewModel.inputMode.value == "ADD") {
-            (activity as AppCompatActivity).supportActionBar?.title = "メニューの追加" // TODO @string
-        } else if (userInputViewModel.inputMode.value == "EDIT") {
-            (activity as AppCompatActivity).supportActionBar?.title = "メニューの修正"
+        when (userInputViewModel.inputMode.value) {
+            "ADD" -> {
+                (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_add)
+            }
+            "EDIT" -> {
+                (activity as AppCompatActivity).supportActionBar?.title = getString(R.string.title_edit)
+            }
         }
 
         // ドロップダウンがフォーカスを受けたらキーボードを隠す
-        binding.foodTypeDropdown.setOnFocusChangeListener(
-            (OnFocusChangeListener { v, hasFocus ->
-                if (hasFocus) KeyboardUtils.hideKeyboard(v)
-            })
-        )
+        binding.foodTypeDropdown.onFocusChangeListener = (OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) KeyboardUtils.hideKeyboard(v)
+        })
 
         // 入力途中の情報があれば、再設定し入力を補助する
         reloadUserInput()
+
+        // 日付ダイアログ
+        val eText = binding.foodStartDate as EditText
+        eText.setOnClickListener {
+            // ドラムロール式DatePickerを呼び出す
+            MyDatePicker.showDatePicker(eText)
+        }
 
         // 画像拡大ボタン
         binding.floatingImageSpreadButton.setOnClickListener {showExtendedImage() }
@@ -128,15 +154,17 @@ class FragmentEdit : Fragment() {
 
         // 保存ボタン
         binding.editFood.setOnClickListener {
-            if (userInputViewModel.inputMode.value == "ADD") {
-                addFood()
-            } else if (userInputViewModel.inputMode.value == "EDIT") {
-                editFood()
+            when (userInputViewModel.inputMode.value) {
+                "ADD" -> {
+                    addFood()
+                }
+                "EDIT" -> {
+                    editFood()
+                }
             }
         }
 
-        // 一覧と同様にデータベースの変更を監視しているので、変更があれば動的に詳細データを自動更新
-        // データ１行をDBから取得し画面へ表示（動的監視付き）の良いサンプル
+        // 修正モードの場合、DBから取得した値で初期表示
         if (userInputViewModel.inputMode.value == "EDIT") {
             // 修正対象のID
             foodID = userInputViewModel.foodId.value!!
@@ -166,11 +194,14 @@ class FragmentEdit : Fragment() {
                     // 取得した画像を内部ストレージへ書き込む
                     val fileName = "${UUID.randomUUID()}.jpg"
                     binding.foodImageBmpName.text = fileName
-                    // 取得した画像を内部ストレージへ書き込む
-                    saveImgsFromBmp(bmp, fileName, requireActivity())
+                    ImageFiles.saveImgsFromBmp(requireActivity(), bmp, fileName)
+                    // ↑ これだと、画像を選択したけどメニューは保存しないを繰り返すとゴミの画像ファイルが増えていく。
+                    // ゴミを増やさないためには、メニューが保存されなかった場合は画像ファイルを削除する必要がある。
+                    // ただし、「画像を選択したけどメニューは保存しない」操作は非常にレアなケースと想定し
+                    // 特別な処理は追加しない。
 
                     // 内部ストレージへ書き込んだファイルから改めて画像取得
-                    val loadbmp = readImgsFromFileName(fileName, requireActivity())
+                    val loadbmp = ImageFiles.readImgsFromFileName(requireActivity(), fileName)
                     binding.foodimage.setImageBitmap(loadbmp)
                 }
             } catch (e: Exception) {
@@ -213,7 +244,7 @@ class FragmentEdit : Fragment() {
             binding.foodImageBmpName.text = bmpName
 
             // 画像ロード
-            val loadbmp = readImgsFromFileName(bmpName, requireActivity())
+            val loadbmp = ImageFiles.readImgsFromFileName(requireActivity(), bmpName)
             binding.foodimage.setImageBitmap(loadbmp)
         }
 
@@ -226,7 +257,7 @@ class FragmentEdit : Fragment() {
         // カテゴリー
         val foodType = binding.userInputViewModel?.foodType?.value
         if (foodType != null && foodType != "") {
-            binding.foodTypeDropdown.setText(foodType)
+            setFoodTypeDropdown(foodType)
         }
 
         // 冬季限定
@@ -260,31 +291,9 @@ class FragmentEdit : Fragment() {
 
         // DBの画像ファイル名から画像取得
         binding.foodImageBmpName.text = food.bmpName
-        val loadbmp = readImgsFromFileName(food.bmpName, requireActivity())
+        val loadbmp = ImageFiles.readImgsFromFileName(requireActivity(), food.bmpName)
         binding.foodimage.setImageBitmap(loadbmp)
 
-    }
-
-    // ───────────────────────────────────────────────────────────
-    // メニュー一覧（ActivityList）へ戻るためのリスナー
-    // ───────────────────────────────────────────────────────────
-    interface FromActivityEditToListener {
-        fun toListActivity()
-    }
-
-    private var listener : FromActivityEditToListener? = null
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        listener = context as? FromActivityEditToListener
-        if (listener == null) {
-            throw ClassCastException("$context must implement FromActivityEditToListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
     }
 
     // ───────────────────────────────────────────────────────────
@@ -292,9 +301,9 @@ class FragmentEdit : Fragment() {
     // ───────────────────────────────────────────────────────────
     private fun addFood() {
         // 画面入力チェック
-        val inputFoodName : Editable? = binding.foodName.text
-        val inputFoodStartDate : Editable? = binding.foodStartDate.text
-        val inputFoodPrice : Editable? = binding.foodPrice.text
+        val inputFoodName = binding.foodName.text.toString()
+        val inputFoodStartDate = binding.foodStartDate.text.toString()
+        val inputFoodPrice = binding.foodPrice.text.toString()
         if (!checkInputFood(inputFoodName, inputFoodStartDate, inputFoodPrice)){
             showErrorMessage()
             return
@@ -323,9 +332,9 @@ class FragmentEdit : Fragment() {
     // ───────────────────────────────────────────────────────────
     private fun editFood() {
         // 画面入力チェック
-        val inputFoodName : Editable? = binding.foodName.text
-        val inputFoodStartDate : Editable? = binding.foodStartDate.text
-        val inputFoodPrice : Editable? = binding.foodPrice.text
+        val inputFoodName = binding.foodName.text.toString()
+        val inputFoodStartDate = binding.foodStartDate.text.toString()
+        val inputFoodPrice = binding.foodPrice.text.toString()
         if (!checkInputFood(inputFoodName, inputFoodStartDate, inputFoodPrice)){
             showErrorMessage()
             return
@@ -367,84 +376,33 @@ class FragmentEdit : Fragment() {
         inputMethodManager.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken, 0)
         _binding = null
     }
-}
 
+    // 画面から入力された内容をチェック
+    private fun checkInputFood(inputFoodName : String, inputFoodStartDate : String, inputFoodPrice : String) : Boolean{
 
-// ユーザーが選択した画像を内部ストレージに保管する
-fun saveImgsFromBmp(bmp: Bitmap, outputFileName:String, context: Context) {
-    try {
-        val byteArrOutputStream = ByteArrayOutputStream()
-        val fileOutputStream: FileOutputStream = context.openFileOutput(outputFileName,Context.MODE_PRIVATE)
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, byteArrOutputStream)
-        fileOutputStream.write(byteArrOutputStream.toByteArray())
-        fileOutputStream.close()
-    }
-    catch (e:Exception){
-        e.printStackTrace()
-    }
-}
-
-// 内部ストレージ内の画像を取得する
-fun readImgsFromFileName(fileName:String, context: Context): Bitmap? {
-    return try {
-        val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
-        BitmapFactory.decodeStream(bufferedInputStream)
-    }
-    catch (e: IOException){
-        e.printStackTrace()
-        null
-    }
-}
-
-fun String.isDate(pattern: String = "yyyy/MM/dd"): Boolean {
-    val sdFormat = try {
-        SimpleDateFormat(pattern)
-    } catch (e: IllegalArgumentException) {
-        return false
-    }
-    sdFormat.let {
-        try {
-            it.parse(this)
-        } catch (e: ParseException){
+        // メニュー名 ----------------------------------------
+        if (inputFoodName == ""){
             return false
         }
-    }
-    return true
-}
 
-fun String.toDateorNull(pattern: String = "yyyy/MM/dd"): Date? {
-    val sdFormat = try {
-        SimpleDateFormat(pattern)
-    } catch (e: IllegalArgumentException) {
-        return null
-    }
-    val date = sdFormat.let {
-        try {
-            it.parse(this)
-        } catch (e: ParseException){
-            return null
+        // 販売開始日 ----------------------------------------
+        if (inputFoodStartDate == ""){
+            return false
         }
-    }
-    return date
-}
+        // 日付判定
+        MyDatePicker.toLocaleDate(inputFoodStartDate) ?: return false
 
-// 画面から入力された内容をチェック
-fun checkInputFood(inputFoodName : Editable?, inputFoodStartDate : Editable?, inputFoodPrice : Editable?) : Boolean{
-    if (inputFoodName.isNullOrEmpty()){
-        return false
+        // 価格 ----------------------------------------
+        if (inputFoodPrice == ""){
+            return false
+        }
+        // 整数値判定
+        inputFoodPrice.toIntOrNull() ?: return false
+        // ０以上
+        if (inputFoodPrice.toIntOrNull()!! < 0){
+            return false
+        }
+
+        return true
     }
-    if (inputFoodStartDate.isNullOrEmpty()){
-        return false
-    }
-    if(!inputFoodStartDate.toString().isDate()) {
-        return false
-    }
-    if (inputFoodPrice.isNullOrEmpty()){
-        return false
-    }
-    val checkInt = inputFoodPrice.toString().toIntOrNull()
-    if (checkInt == null){
-        return false
-    }
-    return true
 }

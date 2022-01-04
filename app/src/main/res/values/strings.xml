@@ -25,4 +25,6 @@
     <string name="winter_only">冬季限定</string>
     <string name="food_type">カテゴリー</string>
     <string name="default_food_type">和食</string>
+    <string name="title_add">メニューの追加</string>
+    <string name="title_edit">メニューの修正</string>
 </resources>
