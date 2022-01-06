@@ -17,15 +17,6 @@
         </item>
         <!-- For switches -->
         <item name="switchStyle">@style/Widget.MyStyle.CompoundButton.Switch</item>
-
     </style>
 
-    <style name="Theme.ManageMenu.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.ManageMenu.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.ManageMenu.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

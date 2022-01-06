@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.asLiveData
+import androidx.room.Query
 import kotlinx.coroutines.launch
 
 class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
@@ -112,6 +113,14 @@ class FoodMenuViewModel(private val foodMenuDao: FoodMenuDao) : ViewModel() {
             foodMenuDao.delete(food)
         }
     }
+
+    fun deleteAll() {
+        viewModelScope.launch {
+            foodMenuDao.deleteAll()
+        }
+    }
+
+
 }
 
 class FoodMenuViewModelFactory(private val foodMenuDao: FoodMenuDao) : ViewModelProvider.Factory {

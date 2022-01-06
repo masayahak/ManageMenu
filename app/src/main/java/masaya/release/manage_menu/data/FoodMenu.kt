@@ -66,6 +66,9 @@ interface FoodMenuDao {
     @Delete
     suspend fun delete(item: FoodMenu)
 
+    @Query("DELETE FROM FoodMenu")
+    suspend fun deleteAll()
+
 }
 
 fun String.toDateorNull(pattern: String = "yyyy/MM/dd"): Date? {

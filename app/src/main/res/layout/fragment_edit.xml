@@ -124,26 +124,50 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <!-- 販売開始日 -->
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/food_startDate_label"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin"
                     android:layout_marginStart="@dimen/margin"
-                    android:hint="@string/food_startDate_req"
-                    app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"
                     android:layout_weight="3"
                     >
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/food_startDate"
+                    <!-- 販売開始日 -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/food_startDate_label"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="date"
-                        android:drawableEnd="@drawable/ic_arrow_down"
-                        />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:hint="@string/food_startDate_req"
+                        app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/food_startDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="date"
+                            android:clickable="false"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- DatePicker表示ボタン -->
+                    <ImageView
+                        android:id="@+id/date_picker_action"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/datepicker"
+                        android:src="@drawable/ic_arrow_down"
+                        app:layout_constraintTop_toTopOf="@id/food_startDate_label"
+                        app:layout_constraintBottom_toBottomOf="@id/food_startDate_label"
+                        android:layout_marginTop="@dimen/margin_between_elements"
+                        app:layout_constraintEnd_toEndOf="@id/food_startDate_label"
+                        android:layout_marginEnd="@dimen/margin"
+                        app:tint="@android:color/black" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>
 

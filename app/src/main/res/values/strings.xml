@@ -27,4 +27,8 @@
     <string name="default_food_type">和食</string>
     <string name="title_add">メニューの追加</string>
     <string name="title_edit">メニューの修正</string>
+    <string name="load_testdata">テストデータをロードする</string>
+    <string name="load_question">データをすべて削除して、テストデータをロードしますか？</string>
+    <string name="do_load">削除してロードする</string>
+    <string name="datepicker">日付入力</string>
 </resources>

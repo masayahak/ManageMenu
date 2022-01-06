@@ -36,4 +36,20 @@ object ImageFiles {
         }
     }
 
+    // 内部ストレージ内の画像を「一覧用に縮小して」取得する
+    fun readSmallImgsFromFileName(context: Context, fileName:String): Bitmap? {
+        return try {
+            val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
+
+            // TODO 仮で32分の1にしているが、画像サイズに合わせて縮小率を決定する
+            val imageOptions = BitmapFactory.Options()
+            imageOptions.inSampleSize = 32  // 縦・横 それぞれ32分の1に縮小している
+            BitmapFactory.decodeStream(bufferedInputStream, null, imageOptions)
+        }
+        catch (e: IOException){
+            e.printStackTrace()
+            null
+        }
+    }
+
 }

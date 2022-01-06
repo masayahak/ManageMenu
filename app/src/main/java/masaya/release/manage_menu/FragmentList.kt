@@ -3,6 +3,7 @@ package masaya.release.manage_menu
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
@@ -48,6 +49,37 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
         FoodMenuViewModelFactory(
             (activity?.application as FoodMenuApplication).database.FoodMenuDao()
         )
+    }
+
+    // ─────────────────────────────────────────────────────
+    // アクションバー ： テストデータロード
+    // ─────────────────────────────────────────────────────
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // アクションバーのために必要
+        setHasOptionsMenu(true)
+    }
+
+    // アプリケーションバーのオプション用メニューを生成
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_options_menu_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    // テストデータロード
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        showLoadTestDataDialog()
+        return true
+    }
+
+    private fun showLoadTestDataDialog() {
+        MaterialAlertDialogBuilder(requireContext(), R.style.Body_ThemeOverlay_MaterialComponents_MaterialAlertDialog)
+            .setMessage(getString(R.string.load_question))
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.no)) { _, _ -> }
+            .setPositiveButton(getString(R.string.do_load)) { _, _ -> TestData.loadTestData(requireActivity(), viewModel)}
+            .show()
     }
 
     // ─────────────────────────────────────────────────────
@@ -150,12 +182,15 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
         fun bind(item: FoodMenu) {
 
             binding.foodId.text = item.id.toString()
-            binding.foodName.text = item.foodName
+
+            // 一覧上に表示するタイトルの長さを制限する
+            binding.foodName.text = item.foodName.take(9)
+
             binding.foodPrice.text = item.getFormattedPrice()
 
-            // 画像のロード
-            val loadbmp = ImageFiles.readImgsFromFileName(binding.root.context, item.bmpName)
-            binding.foodimage.setImageBitmap(loadbmp)
+            // 画像のロード（縮小している）
+            val loadSmallBmp = ImageFiles.readSmallImgsFromFileName(binding.root.context, item.bmpName)
+            binding.foodimage.setImageBitmap(loadSmallBmp)
 
             // ︙がクリックされた時にポップアップメニューを表示する
             binding.rowMenu.setOnClickListener {

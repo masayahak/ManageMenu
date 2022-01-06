@@ -134,9 +134,9 @@ class FragmentEdit : Fragment() {
         reloadUserInput()
 
         // 日付ダイアログ
-        val eText = binding.foodStartDate as EditText
-        eText.setOnClickListener {
+        binding.datePickerAction.setOnClickListener {
             // ドラムロール式DatePickerを呼び出す
+            val eText = binding.foodStartDate as EditText
             MyDatePicker.showDatePicker(eText)
         }
 
