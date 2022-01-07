@@ -41,7 +41,7 @@ object ImageFiles {
         return try {
             val bufferedInputStream = BufferedInputStream(context.openFileInput(fileName))
 
-            // TODO 仮で32分の1にしているが、画像サイズに合わせて縮小率を決定する
+            // TODO 仮で固定値で縮小しているが、画像サイズに合わせて縮小率を決定する
             val imageOptions = BitmapFactory.Options()
             imageOptions.inSampleSize = 16  // 縦・横 それぞれN分の1に縮小している
             imageOptions.inPreferredConfig = Bitmap.Config.RGB_565
