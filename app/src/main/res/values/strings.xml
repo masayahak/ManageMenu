@@ -31,4 +31,5 @@
     <string name="load_question">データをすべて削除して、テストデータをロードしますか？</string>
     <string name="do_load">削除してロードする</string>
     <string name="datepicker">日付入力</string>
+    <string name="order">並べ替え</string>
 </resources>

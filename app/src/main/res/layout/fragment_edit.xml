@@ -7,7 +7,7 @@
     <!-- dataタグはlayout直下になければならない。ConstraintLayoutの下はダメ -->
     <data>
         <variable
-            name="userInputViewModel"
+            name="UserInputViewModel"
             type="masaya.release.manage_menu.data.UserInputViewModel"
             />
         <variable
@@ -166,7 +166,8 @@
                         android:layout_marginTop="@dimen/margin_between_elements"
                         app:layout_constraintEnd_toEndOf="@id/food_startDate_label"
                         android:layout_marginEnd="@dimen/margin"
-                        app:tint="@android:color/black" />
+                        app:tint="@android:color/black"
+                        />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

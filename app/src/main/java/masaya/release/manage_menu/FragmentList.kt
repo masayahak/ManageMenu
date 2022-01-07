@@ -5,6 +5,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -56,6 +57,12 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
         super.onCreate(savedInstanceState)
         // アクションバーのために必要
         setHasOptionsMenu(true)
+
+        // リスト並び替え 初期値の設定
+        listOrderViewModel.setLastOrderKey("foodName")
+        listOrderViewModel.setLastOrderAsce(true)
+        listOrderViewModel.setFoodNameAsce(true)
+        listOrderViewModel.setFoodPriceAsce(true)
     }
 
     // アプリケーションバーのオプション用メニューを生成
@@ -81,6 +88,12 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
     }
 
     // ─────────────────────────────────────────────────────
+    // リスト表示
+    // ─────────────────────────────────────────────────────
+
+    // ユーザーのリストソート状態を保持するためのviewModel
+    private val listOrderViewModel: ListOrderViewModel by activityViewModels()
+
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
@@ -93,8 +106,12 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.listOrderViewModel = listOrderViewModel
 
         val adapter = FoodListAdapter(this)
 
@@ -109,14 +126,86 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
         viewModel.allItems().observe(this.viewLifecycleOwner) { items ->
             items.let {
                 adapter.setFoodList(it)
+
+                // 保存されたキーと順序で並べ替え
+                val sortKey = listOrderViewModel.lastOrderKey.value
+                val ascending = listOrderViewModel.lastOrderAsce.value as Boolean
+                adapter.sortFoodList(sortKey!!, ascending)
             }
         }
+
+        // ───────────────────────────────────────────────────────────────────────
+        // ボタン類
+        // ───────────────────────────────────────────────────────────────────────
+
+        // メニュー名 並べ替え
+        binding.foodNameOrder.setOnClickListener { sortByFoodName(adapter) }
+
+        // 価格 並べ替え
+        binding.foodPriceOrder.setOnClickListener { sortByFoodPrice(adapter) }
 
         // データ追加画面へ遷移する「＋」ボタンクリック
         binding.floatingActionButton.setOnClickListener {
             listener?.toAddFoodmenu()
         }
     }
+
+
+    // ───────────────────────────────────────────────────────────────────────
+    // 並べ替え
+    // ───────────────────────────────────────────────────────────────────────
+
+    // メニュー名 並べ替え
+    private fun sortByFoodName(adapter : FoodListAdapter) {
+
+        val dr_down = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_down)
+        val dr_up = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_up)
+
+        var ascending = listOrderViewModel.foodNameAsce.value as Boolean
+        ascending = !ascending
+
+        // 並べ替え
+        adapter.sortFoodList("foodName", ascending)
+
+        listOrderViewModel.setLastOrderKey("foodName")
+        listOrderViewModel.setLastOrderAsce(ascending)
+        listOrderViewModel.setFoodNameAsce(ascending)
+
+        // アイコンの矢印向き変更
+        if (ascending) {
+            binding.foodNameOrder.setImageDrawable(dr_down)
+        } else {
+            binding.foodNameOrder.setImageDrawable(dr_up)
+        }
+    }
+
+    // 価格 並べ替え
+    private fun sortByFoodPrice(adapter: FoodListAdapter) {
+
+        val dr_down = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_down)
+        val dr_up = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_up)
+
+        var ascending = listOrderViewModel.foodPriceAsce.value as Boolean
+        ascending = !ascending
+
+        adapter.sortFoodList("foodPrice", ascending)
+
+        // 並べ替え
+        listOrderViewModel.setLastOrderKey("foodPrice")
+        listOrderViewModel.setLastOrderAsce(ascending)
+        listOrderViewModel.setFoodPriceAsce(ascending)
+
+        // アイコンの矢印向き変更
+        if (ascending) {
+            binding.foodPriceOrder.setImageDrawable(dr_down)
+        } else {
+            binding.foodPriceOrder.setImageDrawable(dr_up)
+        }
+    }
+
+    // ───────────────────────────────────────────────────────────
+    // ポップアップメニュー
+    // ───────────────────────────────────────────────────────────
 
     // ポップアップメニューの修正クリック
     override fun onEditClicked(foodId: Int) {
@@ -158,7 +247,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
     }
 
     private val listener : PopupEventListner = _listener
-    private var foodList: List<FoodMenu?>? = null
+    private var foodList: List<FoodMenu?>? = mutableListOf()
 
     override fun onBindViewHolder(holder: FoodViewHolder, position: Int) {
         val current : FoodMenu = getItem(position)
@@ -229,7 +318,31 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
 
     @SuppressLint("NotifyDataSetChanged")
     fun setFoodList(foodList: List<FoodMenu?>?) {
+
         this.foodList = foodList
+        //これ大事。ないと、データ追加後に画面が更新されません。
+        notifyDataSetChanged()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun sortFoodList(Key : String, asending : Boolean) {
+
+        val fl = when (Key) {
+            "foodName" ->
+                if (asending) {
+                    foodList?.sortedBy { it?.foodName }
+                } else {
+                    foodList?.sortedBy { it?.foodName }?.reversed()
+                }
+            else ->
+                if (asending) {
+                    foodList?.sortedBy { it?.foodPrice }
+                } else {
+                    foodList?.sortedBy { it?.foodPrice }?.reversed()
+                }
+        }
+        this.foodList = fl
+
         //これ大事。ないと、データ追加後に画面が更新されません。
         notifyDataSetChanged()
     }
