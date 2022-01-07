@@ -5,10 +5,18 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
-import masaya.release.manage_menu.ImageFiles.ImageFiles
+import masaya.release.manage_menu.imageFile.ImageFiles
 import masaya.release.manage_menu.databinding.FragmentImageBinding
+import android.view.GestureDetector
+import android.view.GestureDetector.SimpleOnGestureListener
+import android.view.ScaleGestureDetector
+import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener
+import android.view.MotionEvent
+import android.graphics.Matrix
+import android.widget.ImageView
 
-class FragmentImage : Fragment(){
+
+class FragmentImage : Fragment() {
 
     private val navigationArgs: FragmentImageArgs by navArgs()
 
@@ -19,6 +27,7 @@ class FragmentImage : Fragment(){
         super.onCreate(savedInstanceState)
         // メニューのために必要
         setHasOptionsMenu(true)
+
     }
 
     // アプリケーションバーのオプション用メニューを生成
@@ -42,10 +51,10 @@ class FragmentImage : Fragment(){
 
         // 修正対象のID
         val bmpName = navigationArgs.bmpName
-
         // 内部ストレージへ書き込んだファイルから改めて画像取得
-        val loadbmp = ImageFiles.readImgsFromFileName(requireActivity(), bmpName)
-        binding.foodimage.setImageBitmap(loadbmp)
+        val bitmap = ImageFiles.readImgsFromFileName(requireActivity(), bmpName)
 
+        binding.foodimage.setImageBitmap(bitmap)
     }
 }
+

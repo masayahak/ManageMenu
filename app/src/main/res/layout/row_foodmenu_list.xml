@@ -34,6 +34,8 @@
             android:visibility="invisible"
             tools:text="1234" />
 
+        <!-- メニュー名は文字列長を制限 -->
+        <!-- android:maxLength="9" -->
         <TextView
             android:id="@+id/food_name"
             style="@style/Widget.MyStyle.ListItemTextView"
@@ -41,6 +43,7 @@
             android:gravity="start|center_vertical"
             android:layout_height="48dp"
             android:layout_marginStart="@dimen/margin"
+            android:maxLength="9"
             android:fontFamily="sans-serif"
             app:layout_constraintStart_toEndOf="@id/foodimage"
             app:layout_constraintTop_toTopOf="parent"

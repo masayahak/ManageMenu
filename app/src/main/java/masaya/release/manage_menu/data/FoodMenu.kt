@@ -37,9 +37,12 @@ data class FoodMenu(
     @ColumnInfo(name = "WinterOnly")
     val WinterOnly: Boolean = false
 )
+
+// 価格を通貨表示
 fun FoodMenu.getFormattedPrice(): String =
     NumberFormat.getCurrencyInstance(Locale.JAPAN).format(foodPrice)
 
+// 日付をフォーマット
 fun FoodMenu.getFormattedStartDate(): String? {
     return if (startDate != null) {
         SimpleDateFormat("yyyy/MM/dd").format(startDate)

@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import masaya.release.manage_menu.ImageFiles.ImageFiles
+import masaya.release.manage_menu.imageFile.ImageFiles
 import masaya.release.manage_menu.R
 
 object TestData : Activity() {
@@ -24,7 +24,7 @@ object TestData : Activity() {
         )
 
         viewModel.addNewFood (
-            "ガトーショコラ",
+            "ガトーショコラセット",
             "760",
             "testimage_02.jpg",
             "2022/01/02",
@@ -69,7 +69,7 @@ object TestData : Activity() {
         )
 
         viewModel.addNewFood (
-            "ステーキ定食",
+            "ガーリックステーキ定食",
             "1240",
             "testimage_07.jpg",
             "2022/01/07",
@@ -78,7 +78,7 @@ object TestData : Activity() {
         )
 
         viewModel.addNewFood (
-            "牡蠣のソテー定食",
+            "牡蠣のガーリックソテー定食",
             "1080",
             "testimage_08.jpg",
             "2022/01/08",

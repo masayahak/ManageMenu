@@ -1,4 +1,4 @@
-package masaya.release.manage_menu.ImageFiles
+package masaya.release.manage_menu.imageFile
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -43,7 +43,8 @@ object ImageFiles {
 
             // TODO 仮で32分の1にしているが、画像サイズに合わせて縮小率を決定する
             val imageOptions = BitmapFactory.Options()
-            imageOptions.inSampleSize = 32  // 縦・横 それぞれ32分の1に縮小している
+            imageOptions.inSampleSize = 16  // 縦・横 それぞれN分の1に縮小している
+            imageOptions.inPreferredConfig = Bitmap.Config.RGB_565
             BitmapFactory.decodeStream(bufferedInputStream, null, imageOptions)
         }
         catch (e: IOException){

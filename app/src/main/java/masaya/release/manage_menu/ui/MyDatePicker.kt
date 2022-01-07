@@ -1,4 +1,4 @@
-package masaya.release.manage_menu.UI
+package masaya.release.manage_menu.ui
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog

@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.text.Editable
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -20,8 +19,8 @@ import masaya.release.manage_menu.databinding.FragmentEditBinding
 import java.util.*
 import android.widget.Toast
 import android.view.View.OnFocusChangeListener
-import masaya.release.manage_menu.ImageFiles.ImageFiles
-import masaya.release.manage_menu.UI.MyDatePicker
+import masaya.release.manage_menu.imageFile.ImageFiles
+import masaya.release.manage_menu.ui.MyDatePicker
 
 class FragmentEdit : Fragment() {
 

@@ -3,17 +3,15 @@ package masaya.release.manage_menu
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.PopupMenu
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import masaya.release.manage_menu.ImageFiles.ImageFiles
+import masaya.release.manage_menu.imageFile.ImageFiles
 import masaya.release.manage_menu.data.FoodMenuViewModel
 import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.*
@@ -182,10 +180,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
         fun bind(item: FoodMenu) {
 
             binding.foodId.text = item.id.toString()
-
-            // 一覧上に表示するタイトルの長さを制限する
-            binding.foodName.text = item.foodName.take(9)
-
+            binding.foodName.text = item.foodName
             binding.foodPrice.text = item.getFormattedPrice()
 
             // 画像のロード（縮小している）
