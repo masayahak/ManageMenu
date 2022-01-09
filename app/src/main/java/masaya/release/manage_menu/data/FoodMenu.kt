@@ -39,6 +39,14 @@ data class FoodMenu(
 )
 
 // 価格を通貨表示
+fun FoodMenu.getShortFoodName(): String  {
+    return if (foodName.length <= 9) foodName
+    else {
+        foodName.take(8) + "…"
+    }
+}
+
+// 価格を通貨表示
 fun FoodMenu.getFormattedPrice(): String =
     NumberFormat.getCurrencyInstance(Locale.JAPAN).format(foodPrice)
 

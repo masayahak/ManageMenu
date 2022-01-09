@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin"
+    android:orientation="vertical"
+    android:background="@color/white"
+    >
+
+    <TextView
+        android:id="@+id/textEdit"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/string_edit"
+        android:gravity="center"
+        android:layout_margin="@dimen/margin"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        />
+
+    <View
+        android:id="@+id/line_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:visibility="visible"
+        android:background="@color/gray"
+        />
+
+    <TextView
+        android:id="@+id/textDelete"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="@string/string_delete"
+        android:gravity="center"
+        android:layout_margin="@dimen/margin"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        />
+
+</LinearLayout>

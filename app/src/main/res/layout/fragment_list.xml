@@ -4,18 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <!-- dataタグはlayout直下になければならない。ConstraintLayoutの下はダメ -->
-    <data>
-        <variable
-            name="ListOrderViewModel"
-            type="masaya.release.manage_menu.data.ListOrderViewModel"
-            />
-        <variable
-            name="FragmentList"
-            type="masaya.release.manage_menu.FragmentList"
-            />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,68 +11,78 @@
         >
 
         <!-- 見出し -->
-        <TextView
-            android:id="@+id/food_name"
-            style="@style/Widget.MyStyle.Header"
-            android:text="@string/food"
-            android:fontFamily="sans-serif"
-            android:textSize="16sp"
-            android:layout_margin="@dimen/margin"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/food_name_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            app:layout_constraintStart_toEndOf="@id/food_name"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_arrow_down"
-            app:tint="@android:color/black"
-            android:contentDescription="@string/order"
-            />
+            android:background="@color/purple_700"
+            >
 
-        <TextView
-            android:id="@+id/food_price"
-            style="@style/Widget.MyStyle.Header"
-            android:layout_below="@+id/food_name"
-            android:text="@string/price"
-            android:fontFamily="sans-serif"
-            android:textSize="16sp"
-            android:layout_margin="@dimen/margin"
-            app:layout_constraintEnd_toStartOf="@id/food_price_order"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/food_name"
+                style="@style/Widget.MyStyle.Header"
+                android:text="@string/food"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/margin"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageView
-            android:id="@+id/food_price_order"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_arrow_down"
-            app:tint="@android:color/black"
-            android:contentDescription="@string/order"
-            />
+            <!-- 並べ替えボタン -->
+            <ImageButton
+                android:id="@+id/food_name_order"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/orderByFoodname"
+                android:src="@drawable/ic_arrow_down"
+                app:backgroundTint="@color/purple_700"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/food_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@android:color/white" />
 
-        <View
-            android:id="@+id/divider"
-            style="@style/Divider"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/food_price" />
+            <TextView
+                android:id="@+id/food_price"
+                style="@style/Widget.MyStyle.Header"
+                android:text="@string/price"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/food_price_order"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- 並べ替えボタン -->
+            <ImageButton
+                android:id="@+id/food_price_order"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="@dimen/margin"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@drawable/ic_arrow_down"
+                android:contentDescription="@string/orderByFoodprice"
+                app:backgroundTint="@color/purple_700"
+                app:tint="@android:color/white" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"
+            android:layout_marginTop="@dimen/margin_between_elements"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider"
+            app:layout_constraintTop_toBottomOf="@+id/title"
             android:paddingBottom="200dp"
             android:clipToPadding="false"/>
 

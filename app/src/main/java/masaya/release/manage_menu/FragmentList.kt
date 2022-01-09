@@ -2,10 +2,14 @@ package masaya.release.manage_menu
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.PopupMenu
+import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,6 +22,9 @@ import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.*
 
 class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
+
+    // ユーザーのリストソート状態を保持するためのviewModel
+    private val listOrderViewModel: ListOrderViewModel by activityViewModels()
 
     // ─────────────────────────────────────────────────────
     // 追加画面、修正画面へ遷移する
@@ -91,9 +98,6 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
     // リスト表示
     // ─────────────────────────────────────────────────────
 
-    // ユーザーのリストソート状態を保持するためのviewModel
-    private val listOrderViewModel: ListOrderViewModel by activityViewModels()
-
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
 
@@ -106,12 +110,8 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
         return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        binding.lifecycleOwner = viewLifecycleOwner
-        binding.listOrderViewModel = listOrderViewModel
 
         val adapter = FoodListAdapter(this)
 
@@ -158,8 +158,8 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
     // メニュー名 並べ替え
     private fun sortByFoodName(adapter : FoodListAdapter) {
 
-        val dr_down = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_down)
-        val dr_up = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_up)
+        val drDown = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_down)
+        val drUp = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_up)
 
         var ascending = listOrderViewModel.foodNameAsce.value as Boolean
         ascending = !ascending
@@ -173,17 +173,17 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
 
         // アイコンの矢印向き変更
         if (ascending) {
-            binding.foodNameOrder.setImageDrawable(dr_down)
+            binding.foodNameOrder.setImageDrawable(drDown)
         } else {
-            binding.foodNameOrder.setImageDrawable(dr_up)
+            binding.foodNameOrder.setImageDrawable(drUp)
         }
     }
 
     // 価格 並べ替え
     private fun sortByFoodPrice(adapter: FoodListAdapter) {
 
-        val dr_down = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_down)
-        val dr_up = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_up)
+        val drDown = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_down)
+        val drUp = ContextCompat.getDrawable(requireActivity(), R.drawable.ic_arrow_up)
 
         var ascending = listOrderViewModel.foodPriceAsce.value as Boolean
         ascending = !ascending
@@ -197,9 +197,9 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
 
         // アイコンの矢印向き変更
         if (ascending) {
-            binding.foodPriceOrder.setImageDrawable(dr_down)
+            binding.foodPriceOrder.setImageDrawable(drDown)
         } else {
-            binding.foodPriceOrder.setImageDrawable(dr_up)
+            binding.foodPriceOrder.setImageDrawable(drUp)
         }
     }
 
@@ -213,7 +213,8 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
     }
 
     // ポップアップメニューの削除クリック
-    override fun onDeleteClicked(food: FoodMenu) {
+    override fun onDeleteClicked(foodId: Int) {
+        val food = FoodMenu(foodId)
         showConfirmationDialog(food)
     }
 
@@ -243,7 +244,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
 
     interface PopupEventListner {
         fun onEditClicked(foodId: Int)
-        fun onDeleteClicked(food: FoodMenu)
+        fun onDeleteClicked(foodId: Int)
     }
 
     private val listener : PopupEventListner = _listener
@@ -269,7 +270,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
         fun bind(item: FoodMenu) {
 
             binding.foodId.text = item.id.toString()
-            binding.foodName.text = item.foodName
+            binding.foodName.text = item.getShortFoodName()
             binding.foodPrice.text = item.getFormattedPrice()
 
             // 画像のロード（縮小している）
@@ -285,34 +286,37 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
 
         // ポップアップメニュー表示（修正／削除用）
         private fun onClick() {
-            val food = FoodMenu(
-                binding.foodId.text.toString().toInt(),
-                binding.foodName.text.toString()
-            )
-            showPopupMenu(food)
+            val foodId  = binding.foodId.text.toString().toInt()
+            showPopupWindow(foodId)
         }
 
-        private fun showPopupMenu(food : FoodMenu) {
-            val popup = PopupMenu(binding.root.context, binding.root, Gravity.END)
-            popup.inflate(R.menu.menu_popup_menu_list)
-            popup.setOnMenuItemClickListener { item ->
-                when (item.itemId) {
-                    R.id.menuListContextEdit -> {
-                        // 修正を選択
-                        listener.onEditClicked(food.id)
-                        true
-                    }
-                    R.id.menuListContextDelete -> {
-                        // 削除を選択
-                        listener.onDeleteClicked(food)
-                        true
-                    }
-                    else -> {
-                        false
-                    }
+        // ポップアップメニュー表示
+        private fun showPopupWindow(foodId: Int) {
+
+            val popview = LayoutInflater.from(binding.root.context).inflate(R.layout.popup_on_list, null)
+            val popupWindow = PopupWindow(binding.root.context)
+
+            // 表示したポップアップ上で 修正クリック時のイベント
+            popview.findViewById<TextView>(R.id.textEdit).setOnClickListener{
+                listener.onEditClicked(foodId)
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss()
                 }
             }
-            popup.show()
+            // 表示したポップアップ上で 削除クリック時のイベント
+            popview.findViewById<TextView>(R.id.textDelete).setOnClickListener{
+                listener.onDeleteClicked(foodId)
+                if (popupWindow != null && popupWindow.isShowing()) {
+                    popupWindow.dismiss()
+                }
+            }
+
+            popupWindow.contentView = popview
+            popupWindow.isOutsideTouchable = true
+            popupWindow.isFocusable = true
+
+            // ポップアップ表示
+            popupWindow.showAsDropDown(binding.rowMenu)
         }
     }
 
@@ -325,20 +329,20 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun sortFoodList(Key : String, asending : Boolean) {
+    fun sortFoodList(Key : String, ascending : Boolean) {
 
         val fl = when (Key) {
             "foodName" ->
-                if (asending) {
+                if (ascending) {
                     foodList?.sortedBy { it?.foodName }
                 } else {
                     foodList?.sortedBy { it?.foodName }?.reversed()
                 }
             else ->
-                if (asending) {
-                    foodList?.sortedBy { it?.foodPrice }
+                if (ascending) {
+                    foodList?.sortedWith(compareBy({ it?.foodPrice }, { it?.foodName }))
                 } else {
-                    foodList?.sortedBy { it?.foodPrice }?.reversed()
+                    foodList?.sortedWith(compareBy({ it?.foodPrice }, { it?.foodName }))?.reversed()
                 }
         }
         this.foodList = fl

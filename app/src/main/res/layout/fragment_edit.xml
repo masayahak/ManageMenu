@@ -65,7 +65,7 @@
                     android:layout_marginTop="@dimen/margin"
                     android:layout_marginEnd="@dimen/margin"
                     app:startIconDrawable="@drawable/ic_foodtype"
-                    android:hint="@string/food_type"
+                    android:hint="@string/food_type_req"
                     android:layout_weight="1"
                     >
 
@@ -229,7 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
-                android:text="@string/edit"
+                android:text="@string/save_action"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/foodimage" />
 

@@ -56,27 +56,25 @@
             android:layout_width="wrap_content"
             android:gravity="start|center_vertical"
             android:layout_height="48dp"
-            android:layout_marginEnd="@dimen/margin"
             android:fontFamily="sans-serif-medium"
             app:layout_constraintEnd_toStartOf="@id/row_menu"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="\1,980" />
 
-        <TextView
+        <!-- 詳細ボタン -->
+        <ImageButton
             android:id="@+id/row_menu"
-            style="@style/Widget.MyStyle.ListItemTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginEnd="@dimen/margin"
-            android:fontFamily="sans-serif-black"
-            android:gravity="start|center_vertical"
-            android:text="︙"
-            android:textSize="20sp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="@color/white"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_three_points"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="︙" />
+            app:tint="@color/black"
+            android:contentDescription="@string/detail" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
