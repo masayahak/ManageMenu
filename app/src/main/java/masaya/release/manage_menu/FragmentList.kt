@@ -2,14 +2,11 @@ package masaya.release.manage_menu
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -20,6 +17,7 @@ import masaya.release.manage_menu.imageFile.ImageFiles
 import masaya.release.manage_menu.data.FoodMenuViewModel
 import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.*
+
 
 class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
 
@@ -274,14 +272,14 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
             binding.foodPrice.text = item.getFormattedPrice()
 
             // 画像のロード（縮小している）
-            val loadSmallBmp = ImageFiles.readSmallImgsFromFileName(binding.root.context, item.bmpName)
+            val loadSmallBmp =
+                ImageFiles.readSmallImgsFromFileName(binding.root.context, item.bmpName)
             binding.foodimage.setImageBitmap(loadSmallBmp)
 
             // ︙がクリックされた時にポップアップメニューを表示する
             binding.rowMenu.setOnClickListener {
                 onClick()
             }
-
         }
 
         // ポップアップメニュー表示（修正／削除用）
@@ -294,19 +292,20 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
         private fun showPopupWindow(foodId: Int) {
 
             val popview = LayoutInflater.from(binding.root.context).inflate(R.layout.popup_on_list, null)
+
             val popupWindow = PopupWindow(binding.root.context)
 
             // 表示したポップアップ上で 修正クリック時のイベント
             popview.findViewById<TextView>(R.id.textEdit).setOnClickListener{
                 listener.onEditClicked(foodId)
-                if (popupWindow != null && popupWindow.isShowing()) {
+                if (popupWindow.isShowing) {
                     popupWindow.dismiss()
                 }
             }
             // 表示したポップアップ上で 削除クリック時のイベント
             popview.findViewById<TextView>(R.id.textDelete).setOnClickListener{
                 listener.onDeleteClicked(foodId)
-                if (popupWindow != null && popupWindow.isShowing()) {
+                if (popupWindow.isShowing) {
                     popupWindow.dismiss()
                 }
             }
@@ -315,8 +314,14 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
             popupWindow.isOutsideTouchable = true
             popupWindow.isFocusable = true
 
+            // 高さを直接指定しないと、リストの下部で呼び出された時にはみ出してしまう。、
+            // 本来、必要とされる高さを取得しその値をセットすべきと考えるけど
+            // その方法がよくわからない。今回は固定値埋め込みで良しとする。
+            popupWindow.height = 225
+
             // ポップアップ表示
             popupWindow.showAsDropDown(binding.rowMenu)
+
         }
     }
 
