@@ -2,7 +2,7 @@
     <string name="app_name">メニュー管理</string>
     <string name="food_name_req">メニュー <font color='#FF0000'>*</font></string>
     <string name="food_price_req">価格 <font color='#FF0000'>*</font></string>
-    <string name="food_startDate_req">販売開始日 <font color='#FF0000'>*</font> 年/月/日 </string>
+    <string name="food_startDate_req">販売開始日 <font color='#FF0000'>*</font></string>
     <string name="food_type_req">カテゴリー <font color='#FF0000'>*</font></string>
     <string name="default_food_type">和食</string>
     <string name="winter_only">冬季限定</string>

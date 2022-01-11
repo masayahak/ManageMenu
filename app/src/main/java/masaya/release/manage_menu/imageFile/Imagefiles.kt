@@ -4,10 +4,25 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import masaya.release.manage_menu.imageFile.ImageFiles.readSmallImgsFromFileName
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
 import java.io.FileOutputStream
 import java.io.IOException
+
+
+// 一覧の表示時に画像を1行ずつ読み込んで表示すると処理が重たくなる。
+// DBから読み込んだ上を一覧に表示するのとは別に、
+// 個別のスレッドで（コルーチンで）画像を読み込む
+@BindingAdapter(value = ["setImageFile"])
+fun ImageView.bindImageFile(bmpName: String?) {
+    if (bmpName != null && bmpName.isNotBlank()) {
+        val bmp = readSmallImgsFromFileName(this.context, bmpName)
+        this.setImageBitmap(bmp)
+    }
+}
 
 object ImageFiles {
 

@@ -113,7 +113,7 @@
                     android:layout_marginTop="@dimen/margin"
                     app:startIconDrawable="@drawable/ic_yen"
                     android:hint="@string/food_price_req"
-                    android:layout_weight="2"
+                    android:layout_weight="3"
                     >
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin"
                     android:layout_marginStart="@dimen/margin"
-                    android:layout_weight="3"
+                    android:layout_weight="4"
                     >
 
                     <!-- 販売開始日 -->
@@ -189,6 +189,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_marginTop="@dimen/margin"
+                android:padding="@dimen/margin_between_elements"
                 android:contentDescription="@string/food_image"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

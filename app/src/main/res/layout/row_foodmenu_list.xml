@@ -5,6 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
+    <data>
+        <variable
+            name="foodMenu"
+            type="masaya.release.manage_menu.data.FoodMenu" />
+    </data>
+
     <!-- color_from_press_state:選択された時にグレーバック -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,7 +27,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/no_image"
+            app:setImageFile="@{foodMenu.bmpName}"
+            tools:src="@drawable/no_image"
             />
 
         <!-- 非表示のDBのID（内部処理＋デバッグ用） -->
@@ -32,6 +39,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="invisible"
+            android:text="@{Integer.toString(foodMenu.id)"
             tools:text="1234" />
 
         <!-- メニュー名は文字列長を制限 -->

@@ -267,14 +267,21 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
         // １行分のデータcurrentを画面へセットする
         fun bind(item: FoodMenu) {
 
-            binding.foodId.text = item.id.toString()
+            binding.foodMenu = item
+
             binding.foodName.text = item.getShortFoodName()
             binding.foodPrice.text = item.getFormattedPrice()
 
-            // 画像のロード（縮小している）
-            val loadSmallBmp =
-                ImageFiles.readSmallImgsFromFileName(binding.root.context, item.bmpName)
-            binding.foodimage.setImageBitmap(loadSmallBmp)
+            // 画像はローディングアニメーションを初期表示する。
+            binding.foodimage.setImageResource(R.drawable.loading_animation)
+
+            // ★ 重要 ★  本当に読み込むべき画像は、コルーチン化するために@BindingAdapterで実装している。
+            // imageFile.imagefiles.kt
+            //    @BindingAdapter(value = ["setImageFile"])
+            // BindingAdapterでコルーチン化しないと、リストの一覧表示と合わせて、すべての画像の表示を
+            // メインスレッドの中で直列に行い続けることになる。これが重たすぎてダメ。
+            // リストの文字情報を表示するメインスレッドとは別に、個々の画像を読み込んで表示する
+            // ロジックをコルーチン化している。
 
             // ︙がクリックされた時にポップアップメニューを表示する
             binding.rowMenu.setOnClickListener {
