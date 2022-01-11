@@ -32,5 +32,6 @@
     <string name="datepicker">日付入力</string>
     <string name="orderByFoodname">メニュー名で並べ替え</string>
     <string name="orderByFoodprice">価格で並べ替え</string>
-    <string name="detail">詳細</string>
+    <string name="detail">メニューの編集</string>
+    <string name="menu_list">メニューの一覧</string>
 </resources>

@@ -3,7 +3,6 @@ package masaya.release.manage_menu
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -14,10 +13,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import masaya.release.manage_menu.imageFile.ImageFiles
 import masaya.release.manage_menu.data.FoodMenuViewModel
 import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.*
+
+
+
 
 
 class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
@@ -274,8 +275,8 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
             binding.foodName.text = item.getShortFoodName()
             binding.foodPrice.text = item.getFormattedPrice()
 
-            // 画像はローディングアニメーションを初期表示する。
-            binding.foodimage.setImageResource(R.drawable.loading_animation)
+            // 画像（ロード中をセット）
+            binding.foodimage.setImageResource(R.drawable.loading)
 
             // ★ 重要 ★  本当に読み込むべき画像は、コルーチン化するために@BindingAdapterで実装している。
             // imageFile.imagefiles.kt
@@ -326,7 +327,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
             // 高さを直接指定しないと、リストの下部で呼び出された時にはみ出してしまう。、
             popview.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
             val popHeight: Int = popupWindow.getContentView().getMeasuredHeight()
-            popupWindow.height = (popHeight * 1.1).toInt()
+            popupWindow.height = popHeight
 
             // ポップアップ表示
             popupWindow.showAsDropDown(binding.rowMenu)

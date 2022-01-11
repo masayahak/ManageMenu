@@ -72,16 +72,17 @@
         <!-- 詳細ボタン -->
         <ImageButton
             android:id="@+id/row_menu"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="0dp"
             android:backgroundTint="@color/white"
+            android:contentDescription="@string/detail"
             android:scaleType="fitCenter"
-            android:src="@drawable/ic_three_points"
+            android:src="@drawable/dots_three_vertical_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/black"
-            android:contentDescription="@string/detail" />
+            app:tint="@color/black" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
