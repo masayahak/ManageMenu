@@ -3,6 +3,7 @@ package masaya.release.manage_menu
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.PopupWindow
 import android.widget.TextView
@@ -269,6 +270,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
 
             binding.foodMenu = item
 
+            binding.foodId.text = item.id.toString()
             binding.foodName.text = item.getShortFoodName()
             binding.foodPrice.text = item.getFormattedPrice()
 
@@ -322,13 +324,12 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
             popupWindow.isFocusable = true
 
             // 高さを直接指定しないと、リストの下部で呼び出された時にはみ出してしまう。、
-            // 本来、必要とされる高さを取得しその値をセットすべきと考えるけど
-            // その方法がよくわからない。今回は固定値埋め込みで良しとする。
-            popupWindow.height = 225
+            popview.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+            val popHeight: Int = popupWindow.getContentView().getMeasuredHeight()
+            popupWindow.height = (popHeight * 1.1).toInt()
 
             // ポップアップ表示
             popupWindow.showAsDropDown(binding.rowMenu)
-
         }
     }
 
