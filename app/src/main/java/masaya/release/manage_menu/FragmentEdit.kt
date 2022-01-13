@@ -291,8 +291,11 @@ class FragmentEdit : Fragment() {
         // DBの画像ファイル名から画像取得
         binding.foodImageBmpName.text = food.bmpName
         val loadbmp = ImageFiles.readImgsFromFileName(requireActivity(), food.bmpName)
-        binding.foodimage.setImageBitmap(loadbmp)
-
+        if (loadbmp != null) {
+            binding.foodimage.setImageBitmap(loadbmp)
+        } else {
+            binding.foodimage.setImageResource(R.drawable.no_image)
+        }
     }
 
     // ───────────────────────────────────────────────────────────

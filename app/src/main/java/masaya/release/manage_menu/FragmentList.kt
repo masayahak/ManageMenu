@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -16,10 +18,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import masaya.release.manage_menu.data.FoodMenuViewModel
 import masaya.release.manage_menu.data.*
 import masaya.release.manage_menu.databinding.*
-
-
-
-
 
 class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
 
@@ -122,15 +120,31 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
         val decorator = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
         binding.recyclerView.addItemDecoration(decorator)
 
+
+
+
+
         // データベースの変更を監視し、変更があれば動的にリストを自動更新
         viewModel.allItems().observe(this.viewLifecycleOwner) { items ->
             items.let {
-                adapter.setFoodList(it)
 
-                // 保存されたキーと順序で並べ替え
-                val sortKey = listOrderViewModel.lastOrderKey.value
-                val ascending = listOrderViewModel.lastOrderAsce.value as Boolean
-                adapter.sortFoodList(sortKey!!, ascending)
+                if (it.isEmpty()) {
+                    // ZERO件を表示
+                    binding.zeroItemText.visibility = VISIBLE
+                    binding.recyclerView.visibility = INVISIBLE
+                } else {
+
+                    // リストを表示
+                    binding.zeroItemText.visibility = INVISIBLE
+                    binding.recyclerView.visibility = VISIBLE
+
+                    adapter.setFoodList(it)
+
+                    // 保存されたキーと順序で並べ替え
+                    val sortKey = listOrderViewModel.lastOrderKey.value
+                    val ascending = listOrderViewModel.lastOrderAsce.value as Boolean
+                    adapter.sortFoodList(sortKey!!, ascending)
+                }
             }
         }
 
@@ -275,7 +289,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
             binding.foodName.text = item.getShortFoodName()
             binding.foodPrice.text = item.getFormattedPrice()
 
-            // 画像（ロード中をセット）
+            // 画像（ローディング中をセット）
             binding.foodimage.setImageResource(R.drawable.loading)
 
             // ★ 重要 ★  本当に読み込むべき画像は、コルーチン化するために@BindingAdapterで実装している。

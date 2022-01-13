@@ -34,4 +34,5 @@
     <string name="orderByFoodprice">価格で並べ替え</string>
     <string name="detail">メニューの編集</string>
     <string name="menu_list">メニューの一覧</string>
+    <string name="zeroMenu">現在登録されているメニューは0件です。\n新しいメニューを登録してください。</string>
 </resources>

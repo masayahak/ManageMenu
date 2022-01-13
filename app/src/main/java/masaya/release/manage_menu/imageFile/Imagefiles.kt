@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
+import masaya.release.manage_menu.R
 import masaya.release.manage_menu.imageFile.ImageFiles.readSmallImgsFromFileName
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
@@ -21,6 +22,8 @@ fun ImageView.bindImageFile(bmpName: String?) {
     if (bmpName != null && bmpName.isNotBlank()) {
         val bmp = readSmallImgsFromFileName(this.context, bmpName)
         this.setImageBitmap(bmp)
+    } else {
+        this.setImageResource(R.drawable.no_image_mini)
     }
 }
 

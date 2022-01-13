@@ -11,25 +11,22 @@
             type="masaya.release.manage_menu.data.FoodMenu" />
     </data>
 
-    <!-- color_from_press_state:選択された時にグレーバック -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/color_from_press_state"
-        android:descendantFocusability="blocksDescendants">
+        >
 
         <ImageView
             android:id="@+id/foodimage"
             android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_height="60dp"
             android:layout_marginStart="@dimen/margin"
             android:contentDescription="@string/food_image"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:setImageFile="@{foodMenu.bmpName}"
-            tools:src="@drawable/no_image"
-            />
+            tools:src="@drawable/no_image_mini" />
 
         <!-- 非表示のDBのID（内部処理＋デバッグ用） -->
         <TextView
