@@ -71,6 +71,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <!-- ヘッダーとリストを仕切る分割線 -->
         <View
             android:id="@+id/line_horizontal"
             android:layout_width="match_parent"
@@ -82,20 +83,7 @@
             app:layout_constraintTop_toBottomOf="@+id/title"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/menu_list"
-            android:visibility="invisible"
-            android:scrollbars="vertical"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/line_horizontal"
-            android:paddingBottom="200dp"
-            android:clipToPadding="false"/>
-
+        <!-- リストがゼロ件だった場合に表示するメッセージ用テキスト -->
         <TextView
             android:id="@+id/zeroItemText"
             android:layout_width="wrap_content"
@@ -108,19 +96,46 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line_horizontal" />
 
-        <!-- 追加ボタン -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_between_elements"
-            android:layout_marginBottom="@dimen/margin_between_elements"
-            android:contentDescription="@string/add_new_food"
-            android:src="@android:drawable/ic_input_add"
-            app:backgroundTint="@color/design_default_color_primary"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <!-- スクロール時にFABを非表示にする -->
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:tint="@android:color/white" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line_horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <!-- リスト -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/menu_list"
+                android:visibility="invisible"
+                android:scrollbars="vertical"
+                android:layout_marginTop="@dimen/margin_between_elements"
+                android:paddingBottom="0dp"
+                android:clipToPadding="false"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                />
+
+            <!-- 追加ボタン -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingActionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_between_elements"
+                android:layout_marginBottom="@dimen/margin_between_elements"
+                android:contentDescription="@string/add_new_food"
+                android:src="@android:drawable/ic_input_add"
+                app:backgroundTint="@color/design_default_color_primary"
+                android:layout_gravity="bottom|end"
+                app:tint="@android:color/white"
+                app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+                />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
