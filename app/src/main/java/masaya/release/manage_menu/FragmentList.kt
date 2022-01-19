@@ -121,9 +121,6 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
         binding.recyclerView.addItemDecoration(decorator)
 
 
-
-
-
         // データベースの変更を監視し、変更があれば動的にリストを自動更新
         viewModel.allItems().observe(this.viewLifecycleOwner) { items ->
             items.let {
@@ -160,6 +157,8 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
 
         // データ追加画面へ遷移する「＋」ボタンクリック
         binding.floatingActionButton.setOnClickListener {
+
+            // 追加モードで画面遷移
             listener?.toAddFoodmenu()
         }
     }
@@ -223,6 +222,7 @@ class FragmentList : Fragment(), FoodListAdapter.PopupEventListner {
 
     // ポップアップメニューの修正クリック
     override fun onEditClicked(foodId: Int) {
+        // 修正モードで画面遷移
         listener?.toEditFoodmenu(foodId)
     }
 
@@ -301,6 +301,7 @@ class FoodListAdapter(_listener: PopupEventListner) : RecyclerView.Adapter<FoodL
             // ロジックをコルーチン化している。
 
             // ︙がクリックされた時にポップアップメニューを表示する
+            binding.rowMenu.contentDescription = item.foodName + "の詳細"
             binding.rowMenu.setOnClickListener {
                 onClick()
             }

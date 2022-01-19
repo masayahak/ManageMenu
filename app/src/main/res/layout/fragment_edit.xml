@@ -16,221 +16,240 @@
             />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin">
+        android:layout_height="match_parent"
+        >
 
-        <!-- メニューのタイトル -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/food_name_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:hint="@string/food_name_req"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <!-- 枠線になるのはstyleじゃなくてthemeで指定している。 -->
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/food_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textAutoComplete|textCapWords"
-                android:singleLine="true">
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:id="@+id/category_and_winter"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/food_name_label"
-            >
+            android:layout_margin="@dimen/margin">
 
-            <!-- カテゴリー(ドロップダウン) -->
+            <!-- メニューのタイトル -->
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:id="@+id/food_type_dropdown_label"
+                android:id="@+id/food_name_label"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin"
-                android:layout_marginEnd="@dimen/margin"
-                app:startIconDrawable="@drawable/ic_foodtype"
-                android:hint="@string/food_type_req"
-                android:layout_weight="1"
-                >
+                android:hint="@string/food_name_req"
+                app:hintTextColor="@color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
 
-                <AutoCompleteTextView
-                    android:id="@+id/food_type_dropdown"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:inputType="none"
-                    android:text="@string/default_food_type"
-                    tools:ignore="LabelFor" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <!-- 冬季限定 -->
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/winter_only"
-                style="@style/Widget.MyStyle.CompoundButton.Switch"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="@dimen/margin"
-                android:layout_marginStart="@dimen/margin"
-                android:checked="false"
-                android:text="@string/winter_only"
-                android:layout_weight="1"
-                />
-
-        </LinearLayout>
-
-        <!-- 価格 と 販売開始日 -->
-        <LinearLayout
-            android:id="@+id/price_and_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/category_and_winter"
-            android:baselineAligned="false">
-
-            <!-- 価格 -->
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/food_price_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                app:startIconDrawable="@drawable/ic_yen"
-                android:hint="@string/food_price_req"
-                android:layout_weight="2"
-                >
-
+                <!-- 枠線になるのはstyleじゃなくてthemeで指定している。 -->
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/food_price"
+                    android:id="@+id/food_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="numberDecimal"
-                    android:singleLine="true" />
+                    android:inputType="textAutoComplete|textCapWords"
+                    android:singleLine="true">
+                </com.google.android.material.textfield.TextInputEditText>
+
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- 販売開始日 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
+            <LinearLayout
+                android:id="@+id/category_and_winter"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin"
-                android:layout_marginStart="@dimen/margin"
-                android:layout_weight="3"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_name_label"
                 >
 
-                <!-- 販売開始日 -->
+                <!-- カテゴリー(ドロップダウン) -->
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/food_startDate_label"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/food_startDate_req"
-                    app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:id="@+id/food_type_dropdown_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:layout_marginEnd="@dimen/margin"
+                    app:startIconDrawable="@drawable/ic_foodtype"
+                    android:hint="@string/food_type_req"
+                    app:hintTextColor="@color/black"
+                    android:layout_weight="1"
                     >
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/food_startDate"
+
+                    <AutoCompleteTextView
+                        android:id="@+id/food_type_dropdown"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:inputType="date"
-                        android:clickable="false"
-                        />
+                        android:layout_weight="1"
+                        android:inputType="none"
+                        android:text="@string/default_food_type"
+                        tools:ignore="LabelFor" />
+
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- DatePicker表示ボタン -->
-                <ImageButton
-                    android:id="@+id/date_picker_action"
-                    android:layout_width="48dp"
+                <!-- 冬季限定 -->
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/winter_only"
+                    style="@style/Widget.MyStyle.CompoundButton.Switch"
+                    android:layout_width="0dp"
                     android:layout_height="48dp"
-                    android:contentDescription="@string/datepicker"
-                    android:src="@drawable/ic_arrow_down"
-                    app:layout_constraintTop_toTopOf="@id/food_startDate_label"
-                    app:layout_constraintBottom_toBottomOf="@id/food_startDate_label"
-                    android:layout_marginTop="@dimen/margin_between_elements"
-                    app:layout_constraintEnd_toEndOf="@id/food_startDate_label"
-                    android:layout_marginEnd="@dimen/margin"
-                    app:tint="@android:color/black"
-                    android:background="@color/white"
+                    android:layout_marginTop="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:checked="false"
+                    android:text="@string/winter_only"
+                    android:layout_weight="1"
                     />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
 
-        </LinearLayout>
+            <!-- 価格 と 販売開始日 -->
+            <LinearLayout
+                android:id="@+id/price_and_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/category_and_winter"
+                android:baselineAligned="false">
 
-        <!-- 画像 -->
-        <TextView
-            android:id="@+id/food_image_bmp_name"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price_and_date">
-        </TextView>
+                <!-- 価格 -->
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/food_price_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    app:startIconDrawable="@drawable/ic_yen"
+                    android:hint="@string/food_price_req"
+                    app:hintTextColor="@color/black"
+                    android:layout_weight="2"
+                    >
 
-        <ImageView
-            android:id="@+id/foodimage"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:layout_marginTop="@dimen/margin"
-            android:padding="@dimen/margin_between_elements"
-            android:contentDescription="@string/food_image"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/price_and_date"
-            android:background="@drawable/border"
-            android:src="@drawable/no_image"
-            />
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/food_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="numberDecimal"
+                        android:singleLine="true" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- 画像拡大ボタン -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingImageSpreadButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_between_elements"
-            android:layout_marginTop="@dimen/margin_between_elements"
-            android:contentDescription="@string/image_extention"
-            app:backgroundTint="@color/gray"
-            android:src="@drawable/ic_baseline_photo_size_select_large_24"
-            app:layout_constraintTop_toTopOf="@+id/foodimage"
-            app:layout_constraintEnd_toEndOf="@+id/foodimage"
-            app:tint="@android:color/black" />
+                <!-- 販売開始日 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin"
+                    android:layout_marginStart="@dimen/margin"
+                    android:layout_weight="3"
+                    >
 
-        <!-- 画像編集ボタン -->
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingImageButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_between_elements"
-            android:layout_marginBottom="@dimen/margin_between_elements"
-            android:contentDescription="@string/select_image"
-            app:backgroundTint="@color/gray"
-            android:src="@drawable/ic_baseline_image_search_24"
-            app:layout_constraintBottom_toBottomOf="@+id/foodimage"
-            app:layout_constraintEnd_toEndOf="@+id/foodimage"
-            app:tint="@android:color/black" />
+                    <!-- 販売開始日 -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/food_startDate_label"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="@string/food_startDate_req"
+                        app:hintTextColor="@color/black"
+                        app:startIconDrawable="@drawable/ic_baseline_calendar_month_24"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        >
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/food_startDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="date"
+                            android:clickable="false"
+                            />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/edit_food"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin"
-            android:text="@string/save_action"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/foodimage" />
+                    <!-- DatePicker表示ボタン -->
+                    <ImageButton
+                        android:id="@+id/date_picker_action"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:contentDescription="@string/datepicker"
+                        android:src="@drawable/ic_arrow_down"
+                        app:layout_constraintTop_toTopOf="@id/food_startDate_label"
+                        app:layout_constraintBottom_toBottomOf="@id/food_startDate_label"
+                        android:layout_marginTop="@dimen/margin_between_elements"
+                        app:layout_constraintEnd_toEndOf="@id/food_startDate_label"
+                        android:layout_marginEnd="@dimen/margin"
+                        app:tint="@android:color/black"
+                        app:backgroundTint="@color/white"
+                        />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </LinearLayout>
+
+            <!-- 画像 -->
+            <TextView
+                android:id="@+id/food_image_bmp_name"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:visibility="invisible"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/price_and_date">
+            </TextView>
+
+            <ImageView
+                android:id="@+id/foodimage"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_marginTop="@dimen/margin"
+                android:padding="@dimen/margin_between_elements"
+                android:contentDescription="@string/food_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/price_and_date"
+                android:background="@drawable/border"
+                android:src="@drawable/no_image"
+                />
+
+            <!-- 画像拡大ボタン -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingImageSpreadButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_between_elements"
+                android:layout_marginTop="@dimen/margin_between_elements"
+                android:contentDescription="@string/image_extention"
+                android:src="@drawable/ic_baseline_photo_size_select_large_24"
+                app:layout_constraintTop_toTopOf="@+id/foodimage"
+                app:layout_constraintEnd_toEndOf="@+id/foodimage"
+                app:tint="@android:color/black"
+                app:backgroundTint="@color/gray"
+                />
+
+            <!-- 画像編集ボタン -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/floatingImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_between_elements"
+                android:layout_marginBottom="@dimen/margin_between_elements"
+                app:borderWidth="0dp"
+                app:elevation="6dp"
+                android:contentDescription="@string/select_image"
+                android:src="@drawable/ic_baseline_image_search_24"
+                app:layout_constraintBottom_toBottomOf="@+id/foodimage"
+                app:layout_constraintEnd_toEndOf="@+id/foodimage"
+                app:tint="@color/black"
+                app:backgroundTint="@color/gray"
+                />
+
+            <Button
+                android:id="@+id/edit_food"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin"
+                android:textStyle="bold"
+                android:text="@string/save_action"
+                android:backgroundTint="@color/purple_700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/foodimage" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </layout>

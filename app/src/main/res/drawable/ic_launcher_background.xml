@@ -12,9 +12,14 @@
         android:scaleY="1.05"
         android:translateX="-2.7"
         android:translateY="-2.7">
-        <path
-            android:fillColor="#FF6200EE"
-            android:pathData="M0,0h108v108h-108z" />
+      <group android:scaleX="1.05"
+          android:scaleY="1.05"
+          android:translateX="-2.7"
+          android:translateY="-2.7">
+          <path
+              android:fillColor="#FF6200EE"
+              android:pathData="M0,0h108v108h-108z" />
+      </group>
     </group>
   </group>
 </vector>
